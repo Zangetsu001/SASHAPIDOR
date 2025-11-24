@@ -1,0 +1,66 @@
+﻿<div id="login-registration-container" class="login-registration-container">
+    <div class="overlay" onclick="closeModal()"></div>
+
+    <div class="form-box">
+
+        <div class="button-box">
+            <div id="btn"></div>
+            <button type="button" class="toggle-btn active" onclick="switchToLogin()">Войти</button>
+            <button type="button" class="toggle-btn" onclick="switchToRegister()">Зарегистрироваться</button>
+        </div>
+
+        <!-- ВХОД -->
+        <form id="form_signin" class="input-group-signin">
+            <div class="form-input">
+                <i class="fa fa-envelope icon"></i>
+                <input type="text" id="login-email" class="input-field" required>
+                <label for="login-email" class="input-label">Email</label>
+            </div>
+
+            <div class="form-input">
+                <i class="fa fa-lock icon"></i>
+                <input type="password" id="login-password" class="input-field" required>
+                <label for="login-password" class="input-label">Пароль</label>
+            </div>
+
+            <div id="error-messages-login"></div>
+
+            <button type="submit" class="submit-btn">Войти</button>
+        </form>
+
+        <!-- РЕГИСТРАЦИЯ -->
+        <form id="form_signup" class="input-group-signup hidden">
+            <div class="form-input">
+                <i class="fa fa-envelope icon"></i>
+                <input type="email" id="register-email" class="input-field" required>
+                <label class="input-label">Email</label>
+            </div>
+
+            <div class="form-input">
+                <i class="fa fa-user icon"></i>
+                <input type="text" id="register-login" class="input-field" required>
+                <label class="input-label">Логин</label>
+            </div>
+
+            <div class="form-input">
+                <i class="fa fa-lock icon"></i>
+                <input type="password" id="register-password" class="input-field" required>
+                <label class="input-label">Пароль</label>
+            </div>
+
+            <div class="form-input">
+                <i class="fa fa-lock icon"></i>
+                <input type="password" id="register-password-confirm" class="input-field" required>
+                <label class="input-label">Повторите пароль</label>
+            </div>
+
+            <div id="error-messages-register"></div>
+
+            <button type="submit" class="submit-btn">Зарегистрироваться</button>
+        </form>
+
+        <button class="close-modal-btn" onclick="closeModal()">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+</div>

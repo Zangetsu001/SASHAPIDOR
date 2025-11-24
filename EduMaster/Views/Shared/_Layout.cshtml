@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - EduMaster</title>
+
+    <link rel="stylesheet" href="~/css/shared.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/login_and_registration.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+
+    <!-- Font Awesome без integrity, чтобы не блочило -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+
+    <div class="header-top">
+        <div class="logo">
+            <a asp-area="" asp-controller="Home" asp-action="SiteInformation">EduMaster</a>
+        </div>
+
+        <div class="header-buttons">
+            @if (User.Identity.IsAuthenticated)
+            {
+                    <form method="post" action="/Home/Logout">
+                        <button class="header-button">Выйти</button>
+                    </form>
+            }
+            else
+            {
+                    <button class="header-button" onclick="openModal()">Войти</button>
+                    <button class="header-button" onclick="openModal(); switchToRegister()">Зарегистрироваться</button>
+            }
+        </div>
+    </div>
+
+    <div class="header-image-container">
+        <img class="header-image" src="~/img/fon.jpg" alt="Фоновое изображение" />
+        <div class="header-overlay"></div>
+
+        <div class="header-menu">
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#home-section">Главная</a></li>
+                    <li><a href="#about-section">О нас</a></li>
+                    <li><a href="#features-section">Услуги</a></li>
+                    <li><a href="#contacts-section">Контакты</a></li>
+                    <li><a href="#message-section">Написать сообщение</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container-section">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p><i class="fas fa-map-marker-alt"></i> Адрес: г. Тирасполь ул. Магистральная 5</p>
+            <p><i class="fas fa-phone"></i> Телефон: +373 533-4-4-4-1-3</p>
+            <p><i class="fas fa-envelope"></i> Email: ttiip@mail.ru</p>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; @DateTime.Now.Year - EduMaster. Все права защищены.
+        </div>
+    </footer>
+
+    <!-- Модальное окно -->
+    <partial name="_LoginRegistrationPartial" />
+
+    <script>
+        window.registerUrl = '@Url.Action("Register", "Home")';
+        window.loginUrl = '@Url.Action("Login", "Home")';
+    </script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/shared_script.js" asp-append-version="true"></script>
+    <script src="~/js/login_and_registration_script.js" asp-append-version="true"></script>
+    <script src="~/js/home_script.js" asp-append-version="true"></script>
+</body>
+</html>

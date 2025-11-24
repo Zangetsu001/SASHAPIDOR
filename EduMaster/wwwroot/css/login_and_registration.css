@@ -1,0 +1,261 @@
+﻿/* === Общие стили контейнера === */
+.login-registration-container {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Задний полупрозрачный фон */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* === Блок формы === */
+.form-box {
+    position: relative;
+    z-index: 10;
+    background: #fff;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 16px;
+    padding: 30px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* === Кнопки переключателя === */
+.button-box {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    background: #f1f1f1;
+    border-radius: 30px;
+    padding: 5px;
+    margin-bottom: 25px;
+}
+
+#btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: calc(50% - 10px);
+    height: calc(100% - 10px);
+    background: linear-gradient(90deg, #0066ff, #0099ff);
+    border-radius: 30px;
+    transition: 0.3s;
+    z-index: 0;
+}
+
+.toggle-btn {
+    position: relative;
+    z-index: 1;
+    width: 50%;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #333;
+    padding: 10px 0;
+    font-size: 15px;
+    transition: color 0.2s;
+}
+
+    .toggle-btn.active {
+        color: #fff;
+    }
+
+/* === Поля ввода === */
+.form-input {
+    position: relative;
+    margin: 20px 0;
+}
+
+.icon {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    color: #0066ff;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px 35px 10px 35px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+    .input-field:focus {
+        border-color: #0066ff;
+        box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.1);
+    }
+
+.input-label {
+    position: absolute;
+    top: -8px;
+    left: 35px;
+    background: #fff;
+    font-size: 12px;
+    color: #666;
+    padding: 0 4px;
+}
+
+/* === Кнопки === */
+.submit-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #0066ff, #0099ff);
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+    .submit-btn:hover {
+        opacity: 0.9;
+    }
+
+/* === Разделитель === */
+.divider-text {
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    margin: 15px 0;
+    position: relative;
+}
+
+    .divider-text::before,
+    .divider-text::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background: #ddd;
+    }
+
+    .divider-text::before {
+        left: 0;
+    }
+
+    .divider-text::after {
+        right: 0;
+    }
+
+/* === Соцсети === */
+/* === Исправление размеров иконок соцсетей === */
+.social-login-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.social-btn {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    gap: 8px;
+    transition: 0.2s;
+    background: #fff;
+}
+
+    .social-btn:hover {
+        background: #f8f8f8;
+    }
+
+.social-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+    .social-btn.google {
+        border-color: #e6bcbc;
+    }
+
+    .social-btn.yandex {
+        border-color: #f2c94c;
+    }
+
+   
+/* === Ошибки === */
+#error-messages-singin,
+#error-messages-singup {
+    color: red;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+/* === Переключение форм === */
+.hidden {
+    display: none !important;
+}
+
+.input-group-signin,
+.input-group-signup {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+    .input-group-signup.hidden,
+    .input-group-signin.hidden {
+        opacity: 0;
+        transform: scale(0.98);
+        pointer-events: none;
+        height: 0;
+        overflow: hidden;
+    }
+
+/* === Адаптив === */
+@media (max-width: 480px) {
+    .form-box {
+        padding: 20px 15px;
+    }
+
+    .input-field {
+        font-size: 13px;
+    }
+
+    .submit-btn {
+        font-size: 14px;
+    }
+
+    .toggle-btn {
+        font-size: 14px;
+    }
+}
+.close-modal-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    z-index: 20;
+}
+
+    .close-modal-btn:hover {
+        color: #000;
+    }

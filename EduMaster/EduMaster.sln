@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster", "EduMaster.csproj", "{561E4F7F-D1B9-4E70-AEC8-91ACE5AE2795}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EduMaster.DAL", "EduMaster.DAL", "{0EB2C1E9-7FAF-4EC4-B501-4991DE0D855F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster.DAL", "..\ClassLibrary1\EduMaster.DAL.csproj", "{6DF04ED7-34A4-44E1-919F-DA8869F5CBE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EduMaster.Domain", "EduMaster.Domain", "{5EFE59AA-8B9F-45A5-9CA6-8A0564C9D57D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster.Domain", "..\EduMaster.Domain\EduMaster.Domain.csproj", "{D1726302-6F8F-4B50-9F28-99613703C376}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{561E4F7F-D1B9-4E70-AEC8-91ACE5AE2795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{561E4F7F-D1B9-4E70-AEC8-91ACE5AE2795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{561E4F7F-D1B9-4E70-AEC8-91ACE5AE2795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{561E4F7F-D1B9-4E70-AEC8-91ACE5AE2795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DF04ED7-34A4-44E1-919F-DA8869F5CBE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DF04ED7-34A4-44E1-919F-DA8869F5CBE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DF04ED7-34A4-44E1-919F-DA8869F5CBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DF04ED7-34A4-44E1-919F-DA8869F5CBE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1726302-6F8F-4B50-9F28-99613703C376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1726302-6F8F-4B50-9F28-99613703C376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1726302-6F8F-4B50-9F28-99613703C376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1726302-6F8F-4B50-9F28-99613703C376}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6DF04ED7-34A4-44E1-919F-DA8869F5CBE6} = {0EB2C1E9-7FAF-4EC4-B501-4991DE0D855F}
+		{D1726302-6F8F-4B50-9F28-99613703C376} = {5EFE59AA-8B9F-45A5-9CA6-8A0564C9D57D}
+	EndGlobalSection
+EndGlobal
