@@ -1,0 +1,11 @@
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\bin\Debug\net8.0\EduMaster.Domain.deps.json
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\bin\Debug\net8.0\EduMaster.Domain.dll
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\bin\Debug\net8.0\EduMaster.Domain.pdb
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\obj\Debug\net8.0\EduMaster.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\obj\Debug\net8.0\EduMaster.Domain.AssemblyInfoInputs.cache
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\obj\Debug\net8.0\EduMaster.Domain.AssemblyInfo.cs
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\obj\Debug\net8.0\EduMaster.Domain.csproj.CoreCompileInputs.cache
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\obj\Debug\net8.0\EduMaster.Domain.dll
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\obj\Debug\net8.0\refint\EduMaster.Domain.dll
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\obj\Debug\net8.0\EduMaster.Domain.pdb
+C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\EduMaster.Domain\obj\Debug\net8.0\ref\EduMaster.Domain.dll
