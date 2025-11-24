@@ -1,92 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\ClassLibrary1\\EduMaster.DAL.csproj": {}
+    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.DAL\\EduMaster.DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\ClassLibrary1\\EduMaster.DAL.csproj": {
+    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.DAL\\EduMaster.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\ClassLibrary1\\EduMaster.DAL.csproj",
+        "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.DAL\\EduMaster.DAL.csproj",
         "projectName": "EduMaster.DAL",
-        "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\ClassLibrary1\\EduMaster.DAL.csproj",
+        "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.DAL\\EduMaster.DAL.csproj",
         "packagesPath": "C:\\Users\\qdedm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\ClassLibrary1\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\qdedm\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net8.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
-            "projectReferences": {
-              "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj": {
-                "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
-      },
-      "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
-          "dependencies": {
-            "Npgsql.EntityFrameworkCore.PostgreSQL": {
-              "target": "Package",
-              "version": "[8.0.4, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj",
-        "projectName": "EduMaster.Domain",
-        "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj",
-        "packagesPath": "C:\\Users\\qdedm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\obj\\",
+        "outputPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

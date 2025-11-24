@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\EduMaster.Services.csproj": {}
+    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Services\\EduMaster.Services.csproj": {}
   },
   "projects": {
-    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\EduMaster.Services.csproj": {
+    "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Services\\EduMaster.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\EduMaster.Services.csproj",
+        "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Services\\EduMaster.Services.csproj",
         "projectName": "EduMaster.Services",
-        "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\EduMaster.Services.csproj",
+        "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Services\\EduMaster.Services.csproj",
         "packagesPath": "C:\\Users\\qdedm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\obj\\",
+        "outputPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
