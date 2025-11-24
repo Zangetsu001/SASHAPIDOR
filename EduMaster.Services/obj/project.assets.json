@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\EduMaster.Service.csproj",
-      "projectName": "EduMaster.Service",
-      "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\EduMaster.Service.csproj",
+      "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\EduMaster.Services.csproj",
+      "projectName": "EduMaster.Services",
+      "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\EduMaster.Services.csproj",
       "packagesPath": "C:\\Users\\qdedm\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Service\\obj\\",
       "projectStyle": "PackageReference",

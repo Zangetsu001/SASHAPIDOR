@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("EduMaster.Domain")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("EduMaster.DAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16bc26044690a73d0aa851c7409197822cfca427")]
-[assembly: System.Reflection.AssemblyProductAttribute("EduMaster.Domain")]
-[assembly: System.Reflection.AssemblyTitleAttribute("EduMaster.Domain")]
+[assembly: System.Reflection.AssemblyProductAttribute("EduMaster.DAL")]
+[assembly: System.Reflection.AssemblyTitleAttribute("EduMaster.DAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.

@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EduMaster.Domain", "EduMast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster.Domain", "..\EduMaster.Domain\EduMaster.Domain.csproj", "{D1726302-6F8F-4B50-9F28-99613703C376}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{7F742B52-FD89-4EFA-B69C-C2DB53FACCD2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EduMaster.Services", "EduMaster.Services", "{7F742B52-FD89-4EFA-B69C-C2DB53FACCD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster.Service", "..\EduMaster.Service\EduMaster.Service.csproj", "{E90CF228-A3F9-458B-9674-6CB46755A00C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster.Services", "..\EduMaster.Service\EduMaster.Services.csproj", "{E90CF228-A3F9-458B-9674-6CB46755A00C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
