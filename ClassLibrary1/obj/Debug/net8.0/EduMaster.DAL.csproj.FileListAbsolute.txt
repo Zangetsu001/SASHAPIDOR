@@ -22,3 +22,10 @@ C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\o
 C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.dll
 C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\refint\EduMaster.DAL.dll
 C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.pdb
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\bin\Debug\net8.0\EduMaster.DAL.deps.json
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\bin\Debug\net8.0\EduMaster.DAL.dll
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\bin\Debug\net8.0\EduMaster.DAL.pdb
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\bin\Debug\net8.0\EduMaster.Domain.dll
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\bin\Debug\net8.0\EduMaster.Domain.pdb
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaste.A342E2BC.Up2Date
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\ref\EduMaster.DAL.dll
