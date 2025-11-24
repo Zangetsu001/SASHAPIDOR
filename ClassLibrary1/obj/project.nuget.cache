@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TJUMsJYQ5Yw=",
+  "dgSpecHash": "NNPBrSvwwYU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\Уч.практика\\ClassLibrary1\\EduMaster.DAL.csproj",
+  "projectFilePath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\ClassLibrary1\\EduMaster.DAL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\qdedm\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.4\\microsoft.entityframeworkcore.8.0.4.nupkg.sha512",
     "C:\\Users\\qdedm\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.4\\microsoft.entityframeworkcore.abstractions.8.0.4.nupkg.sha512",

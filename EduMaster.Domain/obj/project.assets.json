@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\Уч.практика\\EduMaster.Domain\\EduMaster.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj",
       "projectName": "EduMaster.Domain",
-      "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\Уч.практика\\EduMaster.Domain\\EduMaster.Domain.csproj",
+      "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj",
       "packagesPath": "C:\\Users\\qdedm\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\Уч.практика\\EduMaster.Domain\\obj\\",
+      "outputPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
