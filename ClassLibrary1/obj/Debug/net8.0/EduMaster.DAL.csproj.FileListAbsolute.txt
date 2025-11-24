@@ -13,3 +13,12 @@ C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\ClassLibra
 C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\ClassLibrary1\obj\Debug\net8.0\ref\EduMaster.DAL.dll
 C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\ClassLibrary1\bin\Debug\net8.0\EduMaster.Domain.dll
 C:\Users\qdedm\OneDrive\Рабочий стол\Уч.практика\ClassLibrary1\bin\Debug\net8.0\EduMaster.Domain.pdb
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.csproj.AssemblyReference.cache
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.AssemblyInfoInputs.cache
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.AssemblyInfo.cs
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.csproj.CoreCompileInputs.cache
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.sourcelink.json
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.dll
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\refint\EduMaster.DAL.dll
+C:\Users\qdedm\OneDrive\Рабочий стол\pizda\SASHAPIDOR\ClassLibrary1\obj\Debug\net8.0\EduMaster.DAL.pdb
