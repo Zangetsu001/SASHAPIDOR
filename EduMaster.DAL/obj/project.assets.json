@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "EduMaster.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/EduMaster.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EduMaster.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "EduMaster.Domain/1.0.0": {
+      "type": "project",
+      "path": "../EduMaster.Domain/EduMaster.Domain.csproj",
+      "msbuildProject": "../EduMaster.Domain/EduMaster.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "EduMaster.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\qdedm\\.nuget\\packages\\": {},
@@ -38,7 +57,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj": {
+              "projectPath": "C:\\Users\\qdedm\\OneDrive\\Рабочий стол\\pizda\\SASHAPIDOR\\EduMaster.Domain\\EduMaster.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
