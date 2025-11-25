@@ -5,13 +5,17 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster", "EduMaster.csproj", "{561E4F7F-D1B9-4E70-AEC8-91ACE5AE2795}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EduMaster.DAL", "EduMaster.DAL", "{0EB2C1E9-7FAF-4EC4-B501-4991DE0D855F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EduMaster.Domain", "EduMaster.Domain", "{5EFE59AA-8B9F-45A5-9CA6-8A0564C9D57D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster.Domain", "..\EduMaster.Domain\EduMaster.Domain.csproj", "{D1726302-6F8F-4B50-9F28-99613703C376}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EduMaster.Services", "EduMaster.Services", "{7F742B52-FD89-4EFA-B69C-C2DB53FACCD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EduMaster.DAL", "EduMaster.DAL", "{1B97C1B3-4BD7-46C2-8D75-CF58F7CE2B55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster.DAL", "..\EduMaster.DAL\EduMaster.DAL.csproj", "{E7D8F915-992F-4491-A328-40C2AA5FAC70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMaster.Services", "..\EduMaster.Services\EduMaster.Services.csproj", "{8C52C3F6-A033-4C76-991F-18AA6C6B1568}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,11 +31,21 @@ Global
 		{D1726302-6F8F-4B50-9F28-99613703C376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1726302-6F8F-4B50-9F28-99613703C376}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1726302-6F8F-4B50-9F28-99613703C376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7D8F915-992F-4491-A328-40C2AA5FAC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7D8F915-992F-4491-A328-40C2AA5FAC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7D8F915-992F-4491-A328-40C2AA5FAC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7D8F915-992F-4491-A328-40C2AA5FAC70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C52C3F6-A033-4C76-991F-18AA6C6B1568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C52C3F6-A033-4C76-991F-18AA6C6B1568}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C52C3F6-A033-4C76-991F-18AA6C6B1568}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C52C3F6-A033-4C76-991F-18AA6C6B1568}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D1726302-6F8F-4B50-9F28-99613703C376} = {5EFE59AA-8B9F-45A5-9CA6-8A0564C9D57D}
+		{E7D8F915-992F-4491-A328-40C2AA5FAC70} = {1B97C1B3-4BD7-46C2-8D75-CF58F7CE2B55}
+		{8C52C3F6-A033-4C76-991F-18AA6C6B1568} = {7F742B52-FD89-4EFA-B69C-C2DB53FACCD2}
 	EndGlobalSection
 EndGlobal
