@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduMaster.Domain.ModelsDb
 {
-    [Table("CourseImages")]
+    [Table("CourseImage")]
     public class CourseImageDb
     {
-        [Key]
+        [Column("id")]
         public Guid Id { get; set; }
-
-        public string image_path { get; set; } = string.Empty;
-
-        public bool is_cover { get; set; } = false;
-
+        [Column("image_path")]
+        public string image_path { get; set; } 
+        [Column("is_cover")]
+        public bool is_cover { get; set; } 
+        [Column("course_id")]
         public Guid course_id { get; set; }   // просто поле
     }
 }

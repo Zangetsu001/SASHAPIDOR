@@ -4,22 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduMaster.Domain.ModelsDb
 {
-    [Table("Courses")]
+    [Table("Course")]
     public class CourseDb
     {
-        [Key]
+        [Column("id")]
         public Guid Id { get; set; }
-
-        public string title { get; set; } = string.Empty;
-
-        public string description { get; set; } = string.Empty;
-
+        [Column("title")]
+        public string title { get; set; } 
+        [Column("description")]
+        public string description { get; set; }
+        [Column("price")]
         public decimal price { get; set; }
-
-        public bool is_active { get; set; } = true;
-
-        public DateTime created_at { get; set; } = DateTime.UtcNow;
-
+        [Column("is_active")]
+        public bool is_active { get; set; } 
+        [Column("created_at")]
+        public DateTime created_at { get; set; } 
+        [Column("category_id")]
         public Guid category_id { get; set; }   // просто поле, без связей
     }
 }

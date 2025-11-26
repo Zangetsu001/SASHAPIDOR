@@ -13,14 +13,14 @@ public class ApplicationDbContext : DbContext
     // === Добавьте этот блок кода в ваш класс ===
 
     // Таблица пользователей
-    public DbSet<UserDb> UsersDb { get; set; }
+    public DbSet<UserDb> UserDb { get; set; }
 
     // Таблица категорий
-    public DbSet<CategoryDb> CategoriesDb { get; set; }
+    public DbSet<CategoryDb> CategoryDb { get; set; }
 
     // Таблица курсов
-    public DbSet<CourseDb> CoursesDb { get; set; }
+    public DbSet<CourseDb> CourseDb { get; set; }
 
     // Таблица картинок курсов
-    public DbSet<CourseImageDb> CourseImagesDb { get; set; }
+    public DbSet<CourseImageDb> CourseImageDb { get; set; }
 }

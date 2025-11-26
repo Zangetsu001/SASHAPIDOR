@@ -4,18 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduMaster.Domain.ModelsDb
 {
-    [Table("Users")]
+    [Table("User")]
     public class UserDb
     {
-        [Key]
+        [Column("id")]
         public Guid Id { get; set; }
-
-        public string Login { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-        public string Role { get; set; } = "Student";
-
+        [Column("login")]
+        public string Login { get; set; } 
+        [Column("email")]
+        public string Email { get; set; } 
+        [Column("password_hash")]
+        public string PasswordHash { get; set; } 
+        [Column("role")]
+        public string Role { get; set; } 
         [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } 
     }
 }

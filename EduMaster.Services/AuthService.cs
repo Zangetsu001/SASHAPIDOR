@@ -17,8 +17,8 @@ namespace EduMaster.Services
 
         public async Task<bool> RegisterAsync(string email, string login, string password)
         {
-            // Исправлено: _db.Users -> _db.UsersDb
-            bool exist = await _db.UsersDb.AnyAsync(u => u.Email == email || u.Login == login);
+            
+            bool exist = await _db.UserDb.AnyAsync(u => u.Email == email || u.Login == login);
             if (exist) return false;
 
             var user = new UserDb
@@ -31,16 +31,16 @@ namespace EduMaster.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-            // Исправлено: _db.Users -> _db.UsersDb
-            _db.UsersDb.Add(user);
+          
+            _db.UserDb.Add(user);
             await _db.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> LoginAsync(string login, string password)
         {
-            // Исправлено: _db.Users -> _db.UsersDb
-            var user = await _db.UsersDb.FirstOrDefaultAsync(u => u.Login == login || u.Email == login);
+           
+            var user = await _db.UserDb.FirstOrDefaultAsync(u => u.Login == login || u.Email == login);
             if (user == null) return false;
 
             return _hasher.VerifyPassword(password, user.PasswordHash);

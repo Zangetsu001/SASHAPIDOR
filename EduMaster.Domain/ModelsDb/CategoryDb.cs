@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduMaster.Domain.ModelsDb
 {
-    [Table("Categories")]
+    [Table("Category")]
     public class CategoryDb
     {
-        [Key]
+        [Column("id")]
         public Guid Id { get; set; }
-
-        public string name { get; set; } = string.Empty;
+        [Column("name")]
+        public string name { get; set; } 
     }
 }

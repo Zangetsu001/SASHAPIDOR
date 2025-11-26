@@ -5,9 +5,9 @@ namespace EduMaster.Domain.Models
     public class Category
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty; // Например: "IT", "Marketing"
+        public string Name { get; set; } 
 
         // Связь: В одной категории много курсов
-        public List<Course> Courses { get; set; } = new List<Course>();
+        public List<Course> Course { get; set; } 
     }
 }
