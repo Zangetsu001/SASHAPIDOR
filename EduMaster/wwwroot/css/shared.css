@@ -67,18 +67,19 @@ body {
 .header-image-container {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 60px);
     overflow: hidden;
     margin-top: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .header-image {
-    width: 60%;
+    width: 85%;
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 0 auto;
-    border-radius: 12px;
     animation: slideInUp 1s ease-out;
 }
 
@@ -100,6 +101,7 @@ body {
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 102, 204, 0.3));
+    z-index: 1;
 }
 
 /* === Шапка - кнопки === */
@@ -132,39 +134,45 @@ body {
     transform: translateY(0);
 }
 
-/* === Шапка - меню === */
+/* === Шапка - меню АБСОЛЮТНОЕ ВНИЗУ === */
 
 .header-menu {
     position: absolute;
-    bottom: 60px;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5));
-    backdrop-filter: blur(5px);
-    z-index: 999;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7));
+    backdrop-filter: blur(10px);
+    z-index: 20;
     height: auto;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .nav-menu ul {
     list-style: none;
     display: flex;
     justify-content: center;
-    padding: 18px 0;
-    gap: 5px;
+    padding: 16px 0;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 .nav-menu ul li a {
     color: white;
     text-decoration: none;
-    padding: 12px 24px;
+    padding: 10px 20px;
     display: block;
     transition: all 0.3s ease;
-    border-radius: 6px;
+    border-radius: 20px;
     font-weight: 500;
     white-space: nowrap;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .nav-menu ul li a:hover {
-    background-color: #0066cc;
+    background-color: rgba(0, 102, 204, 0.5);
+    border-color: rgba(0, 102, 204, 0.8);
     transform: translateY(-2px);
 }
 
@@ -247,17 +255,26 @@ footer {
     }
 
     .header-image-container {
-        height: 70vh;
+        height: calc(100vh - 55px);
         margin-top: 55px;
     }
 
     .header-image {
-        width: 70%;
+        width: 80%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .header-menu {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
     }
 
     .nav-menu ul li a {
-        padding: 10px 18px;
-        font-size: 14px;
+        padding: 9px 18px;
+        font-size: 13px;
     }
 
     .container-section {
@@ -294,24 +311,31 @@ footer {
     }
 
     .header-image-container {
-        height: 60vh;
+        height: calc(100vh - 50px);
         margin-top: 50px;
     }
 
     .header-image {
+        width: 80%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .header-menu {
+        position: absolute;
+        bottom: 0;
+        left: 0;
         width: 100%;
-        height: 100%;
-        object-fit: cover;
     }
 
     .nav-menu ul {
-        padding: 14px 0;
-        gap: 2px;
+        padding: 12px 0;
+        gap: 6px;
     }
 
     .nav-menu ul li a {
-        padding: 10px 14px;
-        font-size: 13px;
+        padding: 8px 14px;
+        font-size: 12px;
     }
 
     .container-section {
@@ -361,32 +385,35 @@ footer {
     }
 
     .header-image-container {
-        height: 90vh;
+        height: calc(100vh - 90px);
         margin-top: 90px;
     }
 
     .header-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        width: 80%;
+        height: auto;
+        object-fit: contain;
     }
 
     .header-menu {
-        position: fixed;
+        position: absolute;
         bottom: 0;
+        left: 0;
+        width: 100%;
     }
 
     .nav-menu ul {
         flex-direction: row;
         flex-wrap: wrap;
-        padding: 12px 0;
-        gap: 3px;
+        padding: 12px 8px;
+        gap: 4px;
         justify-content: center;
     }
 
     .nav-menu ul li a {
-        padding: 8px 10px;
-        font-size: 12px;
+        padding: 7px 10px;
+        font-size: 11px;
+        border-radius: 18px;
     }
 
     .container-section {
@@ -452,42 +479,48 @@ footer {
     }
 
     .header-image-container {
-        height: 80vh;
+        height: calc(100vh - 100px);
         margin-top: 100px;
     }
 
     .header-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        width: 85%;
+        height: auto;
+        object-fit: contain;
     }
 
     .header-overlay {
         background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 102, 204, 0.2));
+        z-index: 1;
     }
 
     .header-menu {
-        position: fixed;
+        position: absolute;
         bottom: 0;
+        left: 0;
         width: 100%;
+        z-index: 20;
     }
 
     .nav-menu ul {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        padding: 10px 0;
+        padding: 10px 8px;
         gap: 2px;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
     .nav-menu ul li {
-        width: 100%;
+        width: auto;
         text-align: center;
     }
 
     .nav-menu ul li a {
-        padding: 10px 8px;
-        font-size: 11px;
+        padding: 7px 8px;
+        font-size: 10px;
         display: block;
+        border-radius: 16px;
     }
 
     .container-section {
@@ -543,17 +576,28 @@ footer {
     }
 
     .header-image-container {
-        height: 40vh;
+        height: calc(100vh - 95px);
         margin-top: 95px;
     }
 
     .header-image {
-        width: 95%;
+        width: 90%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .header-menu {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 20;
     }
 
     .nav-menu ul li a {
-        padding: 8px 6px;
-        font-size: 10px;
+        padding: 6px 6px;
+        font-size: 9px;
+        border-radius: 14px;
     }
 
     .container-section {
