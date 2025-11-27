@@ -1,71 +1,26 @@
-﻿/* ==============================
-
-   ГЛАВНЫЙ ФОН И ОСНОВНОЙ МАКЕТ
-
-============================== */
-
+﻿/* === ОБЩИЕ СТИЛИ === */
 body {
-    margin: 0;
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background: #f5f7fa;
-    color: #2c3e50;
-    scroll-behavior: smooth;
+    margin: 0;
+    background-color: #f5f7fa; /* Фон страницы */
 }
 
-.container {
-    width: 90%;
-    max-width: 1300px;
-    margin: 0 auto;
-}
-
-/* ==============================
-
-   ОБЩИЕ СЕКЦИИ
-
-============================== */
-
-.page-section {
-    padding: 60px 20px;
-    max-width: 1300px;
-    margin: 0 auto;
-}
-
-.section-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: #0066cc;
-    margin-bottom: 40px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-}
-
-.section-title i {
-    color: #0066cc;
-    font-size: 34px;
-}
-
-/* ==============================
-
-   HERO СЕКЦИЯ
-
-============================== */
-
-.home-hero {
+/* === HERO СЕКЦИЯ === */
+.page-section.home-hero {
     background: linear-gradient(135deg, #0066cc 0%, #0077b6 100%);
     color: white;
     text-align: center;
-    padding: 80px 20px;
+    padding: 60px 20px;
     border-radius: 0 0 20px 20px;
+    /* Убедитесь, что отступ сверху соответствует высоте вашего хедера */
     margin-top: 60px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .hero-content h1 {
-    font-size: 48px;
+    font-size: 44px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     letter-spacing: 0.5px;
 }
 
@@ -75,39 +30,54 @@ body {
 }
 
 .hero-content p {
-    font-size: 20px;
+    font-size: 18px;
     opacity: 0.95;
-    margin-bottom: 30px;
     letter-spacing: 0.3px;
 }
 
 .hero-btn {
+    /* Если кнопка используется, добавляем базовый стиль */
     display: inline-block;
-    background: linear-gradient(135deg, #28a745, #20c997);
-    color: white;
-    padding: 14px 40px;
-    border-radius: 8px;
+    background: #fff;
+    color: #0066cc;
+    padding: 12px 30px;
+    border-radius: 30px;
     text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    font-size: 16px;
+    font-weight: 700;
+    margin-top: 20px;
+    transition: 0.3s;
 }
 
-.hero-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(40, 167, 69, 0.3);
+    .hero-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+/* === СЕКЦИИ С КОНТЕНТОМ === */
+.page-section {
+    padding: 60px 20px;
+    max-width: 1300px;
+    margin: 0 auto;
 }
 
-/* ==============================
-
-   СЕКЦИЯ "О НАС"
-
-============================== */
-
-.about {
-    background: white;
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
 }
 
+    .section-title i {
+        color: #0066cc;
+        font-size: 32px;
+    }
+
+/* === О НАС === */
 .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -118,7 +88,7 @@ body {
 .about-text h2 {
     font-size: 28px;
     font-weight: 700;
-    color: #0066cc;
+    color: #2c3e50;
     margin-bottom: 20px;
 }
 
@@ -135,25 +105,19 @@ body {
     margin-top: 25px;
 }
 
-.about-benefits li {
-    color: #555;
-    padding: 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 15px;
-    transition: transform 0.3s ease;
-}
+    .about-benefits li {
+        color: #555;
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+    }
 
-.about-benefits li:hover {
-    transform: translateX(5px);
-}
-
-.about-benefits i {
-    color: #0066cc;
-    font-size: 20px;
-    min-width: 24px;
-}
+    .about-benefits i {
+        color: #0066cc;
+        font-size: 18px;
+    }
 
 .about-image img {
     width: 100%;
@@ -170,117 +134,92 @@ body {
 .stat {
     text-align: center;
     background: linear-gradient(135deg, #f8f9fa, #ecf0f1);
-    padding: 40px 20px;
+    padding: 30px;
     border-radius: 12px;
-    transition: transform 0.3s ease;
 }
 
-.stat:hover {
-    transform: translateY(-5px);
-}
+    .stat h3 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #0066cc;
+        margin-bottom: 10px;
+    }
 
-.stat h3 {
-    font-size: 32px;
-    font-weight: 700;
-    color: #0066cc;
-    margin-bottom: 12px;
-}
+    .stat p {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
 
-.stat p {
-    color: #7f8c8d;
-    font-size: 15px;
-}
-
-/* ==============================
-
-   СЕКЦИЯ "УСЛУГИ/КУРСЫ"
-
-============================== */
-
-.features {
-    background: #f8f9fa;
-}
-
+/* === ПОПУЛЯРНЫЕ КУРСЫ (Стилизация карточек) === */
+/* В коде не было .feature-card, добавил базовые стили, чтобы не сломалось */
 .feature-cards-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-    margin-bottom: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
 }
 
 .feature-card {
     background: white;
+    border: 1px solid #ecf0f1;
     border-radius: 14px;
-    padding: 30px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    padding: 25px;
     text-align: center;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
-.feature-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 32px rgba(0, 102, 204, 0.15);
-}
+    .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
+        border-color: #0066cc;
+    }
 
 .feature-icon {
-    font-size: 44px;
+    font-size: 40px;
     margin-bottom: 15px;
     display: block;
 }
 
 .feature-card h2 {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 18px;
     color: #2c3e50;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .feature-card p {
-    color: #7f8c8d;
     font-size: 14px;
-    line-height: 1.6;
+    color: #7f8c8d;
 }
 
-/* === CTA BANNER === */
-
+/* Баннер призыва к действию */
 .cta-banner {
     background: linear-gradient(135deg, #0066cc, #0077b6);
     color: white;
-    padding: 50px 30px;
-    border-radius: 14px;
+    padding: 40px;
+    border-radius: 16px;
     text-align: center;
-}
-
-.cta-banner h2 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 20px;
+    margin-top: 40px;
 }
 
 .cta-btn {
     display: inline-block;
     background: white;
     color: #0066cc;
-    padding: 12px 32px;
+    padding: 10px 25px;
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
-    transition: all 0.3s ease;
+    margin-top: 15px;
+    transition: 0.3s;
 }
 
-.cta-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
-}
+    .cta-btn:hover {
+        transform: scale(1.05);
+    }
 
-/* ==============================
-
-   СЕКЦИЯ "ОТЗЫВЫ"
-
-============================== */
-
+/* === ОТЗЫВЫ === */
 .reviews {
-    background: white;
+    background: #f8f9fa;
 }
 
 .reviews-container {
@@ -290,72 +229,59 @@ body {
 }
 
 .review-card {
-    background: #f8f9fa;
+    background: white;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    border-left: 4px solid #0066cc;
+    transition: transform 0.3s ease;
 }
 
-.review-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
-}
+    .review-card:hover {
+        transform: translateY(-4px);
+    }
 
-.review-card p {
-    color: #555;
-    font-style: italic;
-    margin-bottom: 15px;
-    line-height: 1.7;
-    font-size: 14px;
-}
+    .review-card p {
+        color: #555;
+        font-style: italic;
+        margin-bottom: 15px;
+        line-height: 1.6;
+        font-size: 14px;
+    }
 
-.review-card h3 {
-    color: #0066cc;
-    font-size: 14px;
-    font-weight: 600;
-}
+    .review-card h3 {
+        color: #0066cc;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: right;
+    }
 
-/* ==============================
-
-   СЕКЦИЯ "ПАРТНЕРЫ"
-
-============================== */
-
+/* === ПАРТНЕРЫ === */
 .partners {
     background: #f8f9fa;
 }
 
 .partners-logos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 30px;
+    align-items: center;
+    justify-items: center;
 }
 
-.partners-logos img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    filter: grayscale(50%);
-}
+    .partners-logos img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+        filter: grayscale(80%); /* Чуть стильнее - чб логотипы */
+    }
 
-.partners-logos img:hover {
-    transform: scale(1.08);
-    filter: grayscale(0%);
-}
+        .partners-logos img:hover {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
 
-/* ==============================
-
-   СЕКЦИЯ "КОНТАКТЫ"
-
-============================== */
-
-.contacts {
-    background: white;
-}
-
+/* === КОНТАКТЫ === */
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -364,47 +290,49 @@ body {
 
 .contact-info {
     background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.contact-info p {
-    color: #555;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 15px;
-    line-height: 1.6;
-}
+    .contact-info p {
+        color: #555;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+    }
 
-.contact-info i {
-    color: #0066cc;
-    font-size: 20px;
-    min-width: 24px;
-}
+    .contact-info i {
+        color: #0066cc;
+        font-size: 18px;
+        min-width: 24px;
+    }
 
 .social-links {
     display: flex;
     gap: 15px;
-    margin-top: 25px;
+    margin-top: 20px;
 }
 
-.social-links a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #0066cc, #0077b6);
-    color: white;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    font-size: 20px;
-}
+    .social-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: #0066cc;
+        color: white;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        font-size: 18px;
+    }
 
-.social-links a:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
-}
+        .social-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
 
 .map-wrapper {
     border-radius: 12px;
@@ -412,12 +340,7 @@ body {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* ==============================
-
-   СЕКЦИЯ "СООБЩЕНИЕ"
-
-============================== */
-
+/* === ФОРМА СООБЩЕНИЯ === */
 .message-form {
     max-width: 700px;
     margin: 0 auto;
@@ -431,36 +354,37 @@ body {
     margin-bottom: 25px;
 }
 
-.form-group label {
-    display: block;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
 
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ecf0f1;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
-    transition: all 0.3s ease;
-}
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ecf0f1;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: border-color 0.3s ease;
+        box-sizing: border-box; /* Важно чтобы padding не ломал ширину */
+    }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #0066cc;
-    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-}
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
 
-.form-group textarea {
-    min-height: 120px;
-    resize: vertical;
-}
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
 
 .submit-button {
     width: 100%;
@@ -475,10 +399,10 @@ body {
     transition: all 0.3s ease;
 }
 
-.submit-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
-}
+    .submit-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+    }
 
 #responseMsg {
     margin-top: 15px;
@@ -487,43 +411,9 @@ body {
     color: #28a745;
 }
 
-#scrollTopBtn {
-    position: fixed;
-    right: 25px;
-    bottom: 25px;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #0066cc, #0077b6);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 22px;
-    font-weight: bold;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s ease;
-    z-index: 1000;
-}
-
-#scrollTopBtn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.35);
-}
-
-/* ==============================
-
-   АДАПТАЦИЯ
-
-============================== */
-
+/* === АДАПТИВ === */
 @media (max-width: 1024px) {
     .about-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-extra {
         grid-template-columns: 1fr;
     }
 
@@ -531,8 +421,8 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .feature-cards-container {
-        grid-template-columns: repeat(2, 1fr);
+    .about-extra {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -542,23 +432,11 @@ body {
     }
 
     .section-title {
-        font-size: 26px;
+        font-size: 24px;
     }
 
     .hero-content h1 {
-        font-size: 36px;
-    }
-
-    .hero-content p {
-        font-size: 16px;
-    }
-
-    .cta-banner h2 {
-        font-size: 22px;
-    }
-
-    .feature-cards-container {
-        grid-template-columns: 1fr;
+        font-size: 32px;
     }
 
     .reviews-container {
@@ -570,19 +448,11 @@ body {
     }
 
     .stat {
-        padding: 30px 20px;
+        padding: 20px;
     }
 
     .message-form {
         padding: 25px;
-    }
-
-    .about-text h2 {
-        font-size: 24px;
-    }
-
-    .contact-grid {
-        gap: 20px;
     }
 }
 
@@ -592,51 +462,12 @@ body {
     }
 
     .section-title {
-        font-size: 22px;
+        font-size: 20px;
+        margin-bottom: 20px;
     }
 
     .hero-content h1 {
-        font-size: 28px;
-    }
-
-    .hero-content p {
-        font-size: 14px;
-    }
-
-    .cta-banner {
-        padding: 30px 15px;
-    }
-
-    .cta-banner h2 {
-        font-size: 20px;
-    }
-
-    .feature-cards-container {
-        grid-template-columns: 1fr;
-    }
-
-    .about-grid {
-        gap: 20px;
-    }
-
-    .about-extra {
-        grid-template-columns: 1fr;
-    }
-
-    .stat h3 {
-        font-size: 24px;
-    }
-
-    .reviews-container {
-        grid-template-columns: 1fr;
-    }
-
-    .partners-logos {
-        grid-template-columns: 1fr;
-    }
-
-    .contact-grid {
-        gap: 15px;
+        font-size: 26px;
     }
 
     .message-form {

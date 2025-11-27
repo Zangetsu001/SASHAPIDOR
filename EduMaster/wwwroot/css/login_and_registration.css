@@ -1,56 +1,58 @@
 ﻿/* === Общие стили контейнера === */
-
 .login-registration-container {
     position: fixed;
     inset: 0;
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    font-family: 'Inter', sans-serif;
+    z-index: 2000; /* Поднял z-index чтобы наверняка перекрыть всё */
+    font-family: 'Segoe UI', sans-serif;
+    backdrop-filter: blur(5px); /* Размытие фона сайта */
 }
-
-
-
-/* Задний полупрозрачный фон */
 
 .overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
 }
 
-
-
 /* === Блок формы === */
-
 .form-box {
     position: relative;
     z-index: 10;
     background: #fff;
     width: 90%;
-    max-width: 400px;
-    border-radius: 16px;
-    padding: 30px 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 420px;
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    animation: modalFadeIn 0.3s ease-out;
 }
 
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 /* === Кнопки переключателя === */
-
 .button-box {
     display: flex;
     justify-content: space-between;
     position: relative;
-    background: #f1f1f1;
-    border-radius: 30px;
+    background: #f1f3f5;
+    border-radius: 50px;
     padding: 5px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
 }
-
-
 
 #btn {
     position: absolute;
@@ -58,13 +60,12 @@
     left: 5px;
     width: calc(50% - 10px);
     height: calc(100% - 10px);
-    background: linear-gradient(90deg, #0066ff, #0099ff);
-    border-radius: 30px;
-    transition: 0.3s;
+    background: #0066ff;
+    border-radius: 50px;
+    transition: 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Пружинистая анимация */
     z-index: 0;
+    box-shadow: 0 4px 10px rgba(0, 102, 255, 0.3);
 }
-
-
 
 .toggle-btn {
     position: relative;
@@ -75,266 +76,183 @@
     outline: none;
     cursor: pointer;
     font-weight: 600;
-    color: #333;
-    padding: 10px 0;
+    color: #555;
+    padding: 12px 0;
     font-size: 15px;
     transition: color 0.2s;
 }
-
-
 
     .toggle-btn.active {
         color: #fff;
     }
 
-
-
 /* === Поля ввода === */
-
 .form-input {
     position: relative;
-    margin: 20px 0;
+    margin: 25px 0;
 }
-
-
 
 .icon {
     position: absolute;
-    top: 12px;
-    left: 10px;
-    color: #0066ff;
+    top: 14px;
+    left: 15px;
+    color: #aaa;
+    transition: 0.3s;
+    z-index: 2;
 }
-
-
 
 .input-field {
     width: 100%;
-    padding: 10px 35px 10px 35px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #eee;
+    border-radius: 12px;
     outline: none;
-    font-size: 14px;
-    transition: 0.2s;
+    font-size: 15px;
+    transition: 0.3s;
+    background: #fdfdfd;
 }
-
-
 
     .input-field:focus {
         border-color: #0066ff;
-        box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.1);
+        background: #fff;
     }
 
+        .input-field:focus + .input-label,
+        .input-field:not(:placeholder-shown) + .input-label {
+            top: -10px;
+            left: 15px;
+            font-size: 12px;
+            color: #0066ff;
+            background: #fff;
+            padding: 0 5px;
+            font-weight: 600;
+        }
 
+        .input-field:focus ~ .icon {
+            color: #0066ff;
+        }
 
 .input-label {
     position: absolute;
-    top: -8px;
-    left: 35px;
-    background: #fff;
-    font-size: 12px;
-    color: #666;
-    padding: 0 4px;
+    top: 14px;
+    left: 45px;
+    color: #999;
+    font-size: 15px;
+    pointer-events: none;
+    transition: 0.3s;
 }
 
-
-
 /* === Кнопки === */
-
 .submit-btn {
     width: 100%;
     background: linear-gradient(90deg, #0066ff, #0099ff);
     color: #fff;
     border: none;
-    padding: 12px;
-    border-radius: 8px;
+    padding: 14px;
+    border-radius: 12px;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 15px;
-    transition: 0.2s;
+    font-weight: 700;
+    font-size: 16px;
+    transition: 0.3s;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(0, 102, 255, 0.2);
 }
 
-
-
     .submit-btn:hover {
-        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 102, 255, 0.3);
     }
 
-
-
 /* === Разделитель === */
-
 .divider-text {
     text-align: center;
     font-size: 13px;
-    color: #999;
-    margin: 15px 0;
+    color: #888;
+    margin: 20px 0 15px 0;
     position: relative;
 }
-
-
 
     .divider-text::before,
     .divider-text::after {
         content: "";
         position: absolute;
         top: 50%;
-        width: 40%;
+        width: 30%;
         height: 1px;
-        background: #ddd;
+        background: #eee;
     }
-
-
 
     .divider-text::before {
         left: 0;
     }
 
-
-
     .divider-text::after {
         right: 0;
     }
 
-
-
-/* === Соцсети === */
-
-/* === Исправление размеров иконок соцсетей === */
-
+/* === Соцсети (Google) === */
 .social-login-buttons {
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: center;
 }
 
-
-
 .social-btn {
-    flex: 1;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    width: 100%;
+    border: 2px solid #f1f1f1;
+    border-radius: 12px;
     text-decoration: none;
     color: #333;
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: 600;
+    font-size: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 10px;
-    gap: 8px;
+    padding: 10px;
+    gap: 10px;
     transition: 0.2s;
     background: #fff;
 }
 
-
-
     .social-btn:hover {
-        background: #f8f8f8;
+        background: #f8f9fa;
+        border-color: #ddd;
+        transform: translateY(-1px);
     }
 
-
-
 .social-icon {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
-    border-radius: 4px;
 }
-
-
-
-.social-btn.google {
-    border-color: #e6bcbc;
-}
-
-
-
-.social-btn.yandex {
-    border-color: #f2c94c;
-}
-
-
-
-
 
 /* === Ошибки === */
-
-#error-messages-singin,
-#error-messages-singup {
-    color: red;
+#error-messages-login,
+#error-messages-register {
+    color: #e74c3c;
     font-size: 13px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
-
-
 /* === Переключение форм === */
-
 .hidden {
     display: none !important;
 }
 
-
-
-.input-group-signin,
-.input-group-signup {
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-
-
-    .input-group-signup.hidden,
-    .input-group-signin.hidden {
-        opacity: 0;
-        transform: scale(0.98);
-        pointer-events: none;
-        height: 0;
-        overflow: hidden;
-    }
-
-
-
-/* === Адаптив === */
-
-@media (max-width: 480px) {
-
-    .form-box {
-        padding: 20px 15px;
-    }
-
-
-
-    .input-field {
-        font-size: 13px;
-    }
-
-
-
-    .submit-btn {
-        font-size: 14px;
-    }
-
-
-
-    .toggle-btn {
-        font-size: 14px;
-    }
-}
-
 .close-modal-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     background: transparent;
     border: none;
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
-    color: #666;
+    color: #ccc;
     z-index: 20;
+    transition: 0.2s;
 }
 
-
-
     .close-modal-btn:hover {
-        color: #000;
+        color: #333;
+        transform: rotate(90deg);
     }

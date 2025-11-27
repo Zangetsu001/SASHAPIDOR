@@ -6,57 +6,69 @@
         <div class="button-box">
             <div id="btn"></div>
             <button type="button" class="toggle-btn active" onclick="switchToLogin()">Войти</button>
-            <button type="button" class="toggle-btn" onclick="switchToRegister()">Зарегистрироваться</button>
+            <button type="button" class="toggle-btn" onclick="switchToRegister()">Регистрация</button>
         </div>
 
-        <!-- ВХОД -->
         <form id="form_signin" class="input-group-signin">
             <div class="form-input">
                 <i class="fa fa-envelope icon"></i>
-                <input type="text" id="login-email" class="input-field" required>
+                <input type="text" id="login-email" class="input-field" required placeholder=" ">
                 <label for="login-email" class="input-label">Email</label>
             </div>
 
             <div class="form-input">
                 <i class="fa fa-lock icon"></i>
-                <input type="password" id="login-password" class="input-field" required>
+                <input type="password" id="login-password" class="input-field" required placeholder=" ">
                 <label for="login-password" class="input-label">Пароль</label>
             </div>
 
             <div id="error-messages-login"></div>
 
             <button type="submit" class="submit-btn">Войти</button>
+
+            <div class="divider-text">или войти через</div>
+            <div class="social-login-buttons">
+                <a href="#" class="social-btn google">
+                    <img src="~/img/google.jpg" alt="Google" class="social-icon" /> Google
+                </a>
+            </div>
         </form>
 
-        <!-- РЕГИСТРАЦИЯ -->
         <form id="form_signup" class="input-group-signup hidden">
             <div class="form-input">
                 <i class="fa fa-envelope icon"></i>
-                <input type="email" id="register-email" class="input-field" required>
+                <input type="email" id="register-email" class="input-field" required placeholder=" ">
                 <label class="input-label">Email</label>
             </div>
 
             <div class="form-input">
                 <i class="fa fa-user icon"></i>
-                <input type="text" id="register-login" class="input-field" required>
+                <input type="text" id="register-login" class="input-field" required placeholder=" ">
                 <label class="input-label">Логин</label>
             </div>
 
             <div class="form-input">
                 <i class="fa fa-lock icon"></i>
-                <input type="password" id="register-password" class="input-field" required>
+                <input type="password" id="register-password" class="input-field" required placeholder=" ">
                 <label class="input-label">Пароль</label>
             </div>
 
             <div class="form-input">
                 <i class="fa fa-lock icon"></i>
-                <input type="password" id="register-password-confirm" class="input-field" required>
+                <input type="password" id="register-password-confirm" class="input-field" required placeholder=" ">
                 <label class="input-label">Повторите пароль</label>
             </div>
 
             <div id="error-messages-register"></div>
 
             <button type="submit" class="submit-btn">Зарегистрироваться</button>
+
+            <div class="divider-text">или зарегистрироваться через</div>
+            <div class="social-login-buttons">
+                <a href="#" class="social-btn google">
+                    <img src="~/img/google.jpg" alt="Google" class="social-icon" /> Google
+                </a>
+            </div>
         </form>
 
         <button class="close-modal-btn" onclick="closeModal()">
