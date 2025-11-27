@@ -1,17 +1,40 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     const headerTop = document.querySelector('.header-top');
-    const headerImageContainer = document.querySelector('.header-image-container');
-    const headerTopHeight = headerTop.offsetHeight;
+    const headerTopHeight = headerTop ? headerTop.offsetHeight : 0;
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
 
+    // Обработчик скролла
     window.addEventListener('scroll', function () {
         const scrollPosition = window.scrollY;
 
-        if (scrollPosition > headerTopHeight) {
-            headerTop.style.backgroundColor = '#007bff';
-            headerTop.style.borderBottom = '1px solid #e07b00';
-        } else {
-            headerTop.style.backgroundColor = 'transparent';
-            headerTop.style.borderBottom = 'none';
+        // 1. Логика шапки
+        if (headerTop) {
+            if (scrollPosition > headerTopHeight) {
+                headerTop.style.backgroundColor = '#0066cc'; // Используем ваш синий цвет
+                headerTop.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
+                headerTop.classList.add('scrolled');
+            } else {
+                headerTop.style.backgroundColor = 'rgba(0, 102, 204, 0.98)'; // Возвращаем полупрозрачность
+                headerTop.style.borderBottom = 'none';
+                headerTop.classList.remove('scrolled');
+            }
+        }
+
+        // 2. Логика кнопки "Наверх"
+        if (scrollTopBtn) {
+            if (scrollPosition > 300) { // Показываем кнопку после 300px прокрутки
+                scrollTopBtn.style.display = "block";
+            } else {
+                scrollTopBtn.style.display = "none";
+            }
         }
     });
 });
+
+// Функция клика по кнопке (глобальная область видимости)
+function topFunction() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}

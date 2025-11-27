@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="~/css/login_and_registration.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 
-    <!-- Font Awesome без integrity, чтобы не блочило -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -24,14 +22,14 @@
         <div class="header-buttons">
             @if (User.Identity.IsAuthenticated)
             {
-                    <form method="post" action="/Home/Logout">
-                        <button class="header-button">Выйти</button>
-                    </form>
+                <form method="post" action="/Home/Logout">
+                    <button class="header-button">Выйти</button>
+                </form>
             }
             else
             {
-                    <button class="header-button" onclick="openModal()">Войти</button>
-                    <button class="header-button" onclick="openModal(); switchToRegister()">Зарегистрироваться</button>
+                <button class="header-button" onclick="openModal()">Войти</button>
+                <button class="header-button" onclick="openModal(); switchToRegister()">Зарегистрироваться</button>
             }
         </div>
     </div>
@@ -69,8 +67,11 @@
         </div>
     </footer>
 
-    <!-- Модальное окно -->
     <partial name="_LoginRegistrationPartial" />
+
+    <button onclick="topFunction()" id="scrollTopBtn" title="Наверх">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script>
         window.registerUrl = '@Url.Action("Register", "Home")';
