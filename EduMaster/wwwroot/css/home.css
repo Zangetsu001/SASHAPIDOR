@@ -1,15 +1,17 @@
 ﻿/* ==============================
+
    ГЛАВНЫЙ ФОН И ОСНОВНОЙ МАКЕТ
+
 ============================== */
+
 body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f2f5;
-    color: #333;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: #f5f7fa;
+    color: #2c3e50;
     scroll-behavior: smooth;
 }
 
-/* Контейнер ограничивает ширину контента */
 .container {
     width: 90%;
     max-width: 1300px;
@@ -17,227 +19,481 @@ body {
 }
 
 /* ==============================
-   ШАПКА САЙТА
-============================== */
-.main-header {
-    background: linear-gradient(135deg, #0066cc, #0077b6);
-    color: white;
-    position: relative;
-    padding: 25px 60px 100px;
-    border-radius: 0 0 20px 20px;
-    text-align: center;
-}
 
-    .main-header .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-/* Логотип / название */
-.logo {
-    font-size: 2em;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
-
-/* Кнопки "Войти" и "Регистрация" */
-.header-right .auth-btn {
-    background: #28a745;
-    color: white;
-    padding: 10px 22px;
-    border-radius: 8px;
-    margin-left: 10px;
-    font-weight: bold;
-    font-size: 0.95em;
-    text-decoration: none;
-    transition: background 0.3s, transform 0.2s;
-}
-
-    .header-right .auth-btn:hover {
-        background: #218838;
-        transform: scale(1.05);
-    }
-
-/* ==============================
-   МЕНЮ ВНИЗУ ФОНА
-============================== */
-.bottom-nav {
-    position: absolute;
-    bottom: 15px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-}
-
-    .bottom-nav ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: inline-flex;
-        gap: 50px;
-    }
-
-    .bottom-nav a {
-        color: #ffffff;
-        font-size: 1.1em;
-        text-decoration: none;
-        transition: color 0.3s;
-    }
-
-        .bottom-nav a:hover {
-            color: #cce0ff;
-        }
-
-/* ==============================
    ОБЩИЕ СЕКЦИИ
+
 ============================== */
+
 .page-section {
-    padding: 80px 0;
-    text-align: center;
+    padding: 60px 20px;
+    max-width: 1300px;
+    margin: 0 auto;
 }
 
 .section-title {
-    font-size: 2em;
-    color: #0056b3;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0066cc;
     margin-bottom: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-title i {
+    color: #0066cc;
+    font-size: 34px;
 }
 
 /* ==============================
-   СЕКЦИЯ "О НАС"
+
+   HERO СЕКЦИЯ
+
 ============================== */
+
+.home-hero {
+    background: linear-gradient(135deg, #0066cc 0%, #0077b6 100%);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+    border-radius: 0 0 20px 20px;
+    margin-top: 60px;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+.hero-content .highlight {
+    color: #ffd700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hero-content p {
+    font-size: 20px;
+    opacity: 0.95;
+    margin-bottom: 30px;
+    letter-spacing: 0.3px;
+}
+
+.hero-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 14px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(40, 167, 69, 0.3);
+}
+
+/* ==============================
+
+   СЕКЦИЯ "О НАС"
+
+============================== */
+
 .about {
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 60px 40px;
-    margin: 40px auto;
-    max-width: 1000px;
+    background: white;
 }
 
-.about-mission h2 {
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.about-text h2 {
+    font-size: 28px;
+    font-weight: 700;
     color: #0066cc;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-.key-features {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 20px;
+.about-text p {
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.about-benefits {
     list-style: none;
     padding: 0;
+    margin-top: 25px;
 }
 
-    .key-features li {
-        background: #f8f9fa;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        width: 300px;
-        transition: transform 0.3s;
-    }
+.about-benefits li {
+    color: #555;
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    transition: transform 0.3s ease;
+}
 
-        .key-features li:hover {
-            transform: translateY(-5px);
-        }
+.about-benefits li:hover {
+    transform: translateX(5px);
+}
+
+.about-benefits i {
+    color: #0066cc;
+    font-size: 20px;
+    min-width: 24px;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.about-extra {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.stat {
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9fa, #ecf0f1);
+    padding: 40px 20px;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.stat:hover {
+    transform: translateY(-5px);
+}
+
+.stat h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0066cc;
+    margin-bottom: 12px;
+}
+
+.stat p {
+    color: #7f8c8d;
+    font-size: 15px;
+}
 
 /* ==============================
-   СЕКЦИЯ "УСЛУГИ"
+
+   СЕКЦИЯ "УСЛУГИ/КУРСЫ"
+
 ============================== */
+
 .features {
-    background: #f9fbfd;
+    background: #f8f9fa;
 }
 
 .feature-cards-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
+    margin-bottom: 50px;
 }
 
 .feature-card {
-    background: #ffffff;
-    border-radius: 15px;
-    padding: 25px;
-    width: 280px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    background: white;
+    border-radius: 14px;
+    padding: 30px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: all 0.3s ease;
 }
 
-    .feature-card:hover {
-        transform: translateY(-5px);
-    }
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0, 102, 204, 0.15);
+}
 
 .feature-icon {
-    font-size: 2em;
-}
-
-/* ==============================
-   СЕКЦИЯ "КОНТАКТЫ"
-============================== */
-.contacts p {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-}
-
-/* ==============================
-   СЕКЦИЯ "СООБЩЕНИЕ"
-============================== */
-.message-container {
-    background: #ffffff;
-    border-radius: 20px;
-    max-width: 800px;
-    margin: 0 auto 60px;
-    padding: 50px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-}
-
-.message-form .form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.message-form label {
+    font-size: 44px;
+    margin-bottom: 15px;
     display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
 }
 
-.message-form input,
-.message-form textarea {
-    width: 100%;
-    padding: 10px;
+.feature-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 12px;
+}
+
+.feature-card p {
+    color: #7f8c8d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* === CTA BANNER === */
+
+.cta-banner {
+    background: linear-gradient(135deg, #0066cc, #0077b6);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.cta-banner h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.cta-btn {
+    display: inline-block;
+    background: white;
+    color: #0066cc;
+    padding: 12px 32px;
     border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 1em;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* ==============================
+
+   СЕКЦИЯ "ОТЗЫВЫ"
+
+============================== */
+
+.reviews {
+    background: white;
+}
+
+.reviews-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.review-card {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid #0066cc;
+}
+
+.review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
+}
+
+.review-card p {
+    color: #555;
+    font-style: italic;
+    margin-bottom: 15px;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.review-card h3 {
+    color: #0066cc;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ==============================
+
+   СЕКЦИЯ "ПАРТНЕРЫ"
+
+============================== */
+
+.partners {
+    background: #f8f9fa;
+}
+
+.partners-logos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 30px;
+}
+
+.partners-logos img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    filter: grayscale(50%);
+}
+
+.partners-logos img:hover {
+    transform: scale(1.08);
+    filter: grayscale(0%);
+}
+
+/* ==============================
+
+   СЕКЦИЯ "КОНТАКТЫ"
+
+============================== */
+
+.contacts {
+    background: white;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.contact-info {
+    background: white;
+}
+
+.contact-info p {
+    color: #555;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.contact-info i {
+    color: #0066cc;
+    font-size: 20px;
+    min-width: 24px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #0066cc, #0077b6);
+    color: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 20px;
+}
+
+.social-links a:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+}
+
+.map-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ==============================
+
+   СЕКЦИЯ "СООБЩЕНИЕ"
+
+============================== */
+
+.message-form {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ecf0f1;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 
 .submit-button {
-    background: #007bff;
+    width: 100%;
+    background: linear-gradient(135deg, #0066cc, #0077b6);
     color: white;
     border: none;
+    padding: 14px;
     border-radius: 8px;
-    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 15px;
     cursor: pointer;
-    font-size: 1em;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
 }
 
-    .submit-button:hover {
-        background: #0056b3;
-    }
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+}
 
-/* ==============================
-   КНОПКА "НАВЕРХ"
-============================== */
+#responseMsg {
+    margin-top: 15px;
+    font-weight: 600;
+    text-align: center;
+    color: #28a745;
+}
+
 #scrollTopBtn {
     position: fixed;
     right: 25px;
     bottom: 25px;
     width: 50px;
     height: 50px;
-    background-color: #007bff;
+    background: linear-gradient(135deg, #0066cc, #0077b6);
     color: white;
     border: none;
     border-radius: 50%;
@@ -247,57 +503,147 @@ body {
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 1000;
 }
 
-    #scrollTopBtn:hover {
-        background-color: #0056b3;
-        transform: scale(1.1);
-    }
+#scrollTopBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.35);
+}
 
 /* ==============================
+
    АДАПТАЦИЯ
+
 ============================== */
-@media (max-width: 1000px) {
-    .main-header .container {
-        flex-direction: column;
+
+@media (max-width: 1024px) {
+    .about-grid {
+        grid-template-columns: 1fr;
     }
 
-    .bottom-nav ul {
-        gap: 25px;
+    .about-extra {
+        grid-template-columns: 1fr;
     }
 
-    .feature-card,
-    .key-features li {
-        width: 80%;
+    .contact-grid {
+        grid-template-columns: 1fr;
     }
 
-    .message-container {
-        padding: 30px;
+    .feature-cards-container {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 600px) {
-    .logo {
-        font-size: 1.6em;
+@media (max-width: 768px) {
+    .page-section {
+        padding: 40px 15px;
     }
 
-    .auth-btn {
-        padding: 8px 16px;
-        font-size: 0.85em;
+    .section-title {
+        font-size: 26px;
     }
 
-    .bottom-nav a {
-        font-size: 0.95em;
+    .hero-content h1 {
+        font-size: 36px;
     }
 
-    .bottom-nav ul {
-        flex-wrap: wrap;
+    .hero-content p {
+        font-size: 16px;
+    }
+
+    .cta-banner h2 {
+        font-size: 22px;
+    }
+
+    .feature-cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .reviews-container {
+        grid-template-columns: 1fr;
+    }
+
+    .partners-logos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat {
+        padding: 30px 20px;
+    }
+
+    .message-form {
+        padding: 25px;
+    }
+
+    .about-text h2 {
+        font-size: 24px;
+    }
+
+    .contact-grid {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-section {
+        padding: 30px 10px;
+    }
+
+    .section-title {
+        font-size: 22px;
+    }
+
+    .hero-content h1 {
+        font-size: 28px;
+    }
+
+    .hero-content p {
+        font-size: 14px;
+    }
+
+    .cta-banner {
+        padding: 30px 15px;
+    }
+
+    .cta-banner h2 {
+        font-size: 20px;
+    }
+
+    .feature-cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .about-grid {
+        gap: 20px;
+    }
+
+    .about-extra {
+        grid-template-columns: 1fr;
+    }
+
+    .stat h3 {
+        font-size: 24px;
+    }
+
+    .reviews-container {
+        grid-template-columns: 1fr;
+    }
+
+    .partners-logos {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-grid {
         gap: 15px;
     }
 
-    .page-section {
-        padding: 60px 0;
+    .message-form {
+        padding: 15px;
+    }
+
+    .social-links {
+        justify-content: center;
     }
 }

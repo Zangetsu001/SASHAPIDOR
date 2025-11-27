@@ -1,0 +1,699 @@
+﻿/* ОБЩИЙ СТИЛЬ */
+
+.cabinet-wrapper {
+    margin-top: 80px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* === HERO СЕКЦИЯ === */
+
+.page-section.home-hero {
+    background: linear-gradient(135deg, #0066cc 0%, #0077b6 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+    border-radius: 0 0 20px 20px;
+    margin-top: 60px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hero-content h1 {
+    font-size: 44px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.hero-content .highlight {
+    color: #ffd700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hero-content p {
+    font-size: 18px;
+    opacity: 0.95;
+    letter-spacing: 0.3px;
+}
+
+/* === ОСНОВНОЙ КОНТЕЙНЕР === */
+
+.dashboard-container {
+    display: flex;
+    gap: 30px;
+    margin: 40px auto;
+    max-width: 1300px;
+    padding: 0 20px;
+}
+
+/* === БОКОВАЯ ПАНЕЛЬ === */
+
+.dashboard-sidebar {
+    width: 28%;
+}
+
+.user-card {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    margin-bottom: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #0066cc, #0077b6);
+    color: white;
+    font-size: 44px;
+    font-weight: 700;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.user-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 12px 0;
+}
+
+.user-role {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.btn-logout {
+    width: 100%;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+/* === СТАТИСТИКА === */
+
+.stats-card {
+    background: white;
+    padding: 25px 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.stats-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stats-card h3::before {
+    content: '📊';
+    font-size: 18px;
+}
+
+.stat-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0066cc;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 13px;
+    text-align: right;
+}
+
+/* === ОСНОВНОЙ КОНТЕНТ === */
+
+.dashboard-content {
+    width: 72%;
+}
+
+.dashboard-section {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-title i {
+    color: #0066cc;
+    font-size: 26px;
+}
+
+/* === СЕТКА КУРСОВ === */
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.course-card {
+    background: white;
+    border: 2px solid #ecf0f1;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-6px);
+    border-color: #0066cc;
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.15);
+}
+
+.course-cover {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.course-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    min-height: 24px;
+}
+
+.course-card p {
+    color: #7f8c8d;
+    font-size: 13px;
+    min-height: 36px;
+    margin-bottom: 15px;
+}
+
+.course-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.course-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0066cc;
+}
+
+.course-card button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 13px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0066cc, #0077b6);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+/* === ПУСТЫЕ БЛОКИ === */
+
+.empty-block {
+    text-align: center;
+    padding: 60px 20px;
+    color: #7f8c8d;
+}
+
+.empty-icon {
+    font-size: 64px;
+    color: #bdc3c7;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.no-courses-text {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 40px 20px;
+    font-size: 16px;
+}
+
+/* === СЕКЦИИ С КОНТЕНТОМ === */
+
+.page-section {
+    padding: 60px 20px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.page-section .section-title {
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    font-size: 32px;
+}
+
+/* === О НАС === */
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.about-text h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+.about-benefits {
+    list-style: none;
+    padding: 0;
+    margin-top: 25px;
+}
+
+.about-benefits li {
+    color: #555;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+}
+
+.about-benefits i {
+    color: #0066cc;
+    font-size: 18px;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.about-extra {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.stat {
+    text-align: center;
+    background: linear-gradient(135deg, #f8f9fa, #ecf0f1);
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.stat h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0066cc;
+    margin-bottom: 10px;
+}
+
+.stat p {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+/* === ОТЗЫВЫ === */
+
+.reviews {
+    background: #f8f9fa;
+}
+
+.reviews-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.review-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-4px);
+}
+
+.review-card p {
+    color: #555;
+    font-style: italic;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.review-card h3 {
+    color: #0066cc;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* === ПАРТНЕРЫ === */
+
+.partners {
+    background: #f8f9fa;
+}
+
+.partners-logos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 30px;
+}
+
+.partners-logos img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.partners-logos img:hover {
+    transform: scale(1.05);
+}
+
+/* === КОНТАКТЫ === */
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.contact-info {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.contact-info p {
+    color: #555;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+}
+
+.contact-info i {
+    color: #0066cc;
+    font-size: 18px;
+    min-width: 24px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: #0066cc;
+    color: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.social-links a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.map-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* === ФОРМА СООБЩЕНИЯ === */
+
+.message-form {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ecf0f1;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.submit-button {
+    width: 100%;
+    background: linear-gradient(135deg, #0066cc, #0077b6);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+}
+
+#responseMsg {
+    margin-top: 15px;
+    font-weight: 600;
+    text-align: center;
+    color: #28a745;
+}
+
+/* === АДАПТИВ === */
+
+@media (max-width: 1024px) {
+    .dashboard-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .dashboard-sidebar,
+    .dashboard-content {
+        width: 100%;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-extra {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-section {
+        padding: 40px 15px;
+    }
+
+    .page-section .section-title {
+        font-size: 24px;
+    }
+
+    .dashboard-section {
+        padding: 20px;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reviews-container {
+        grid-template-columns: 1fr;
+    }
+
+    .partners-logos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat {
+        padding: 20px;
+    }
+
+    .message-form {
+        padding: 25px;
+    }
+
+    .hero-content h1 {
+        font-size: 32px;
+    }
+
+    .hero-content p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-section {
+        padding: 30px 10px;
+    }
+
+    .dashboard-section {
+        padding: 15px;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 36px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .about-extra {
+        grid-template-columns: 1fr;
+    }
+
+    .stat h3 {
+        font-size: 24px;
+    }
+
+    .message-form {
+        padding: 15px;
+    }
+
+    .hero-content h1 {
+        font-size: 26px;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+    

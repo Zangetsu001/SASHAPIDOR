@@ -1,6 +1,9 @@
-﻿
-using EduMaster.Domain.ModelsDb;
+﻿using EduMaster.Domain.ModelsDb;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace EduMaster.Services
 {
@@ -8,16 +11,17 @@ namespace EduMaster.Services
     {
         private readonly ApplicationDbContext _db;
         private readonly IPasswordHasher _hasher;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(ApplicationDbContext db, IPasswordHasher hasher)
+        public AuthService(ApplicationDbContext db, IPasswordHasher hasher, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _hasher = hasher;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<bool> RegisterAsync(string email, string login, string password)
         {
-            
             bool exist = await _db.UserDb.AnyAsync(u => u.Email == email || u.Login == login);
             if (exist) return false;
 
@@ -31,19 +35,42 @@ namespace EduMaster.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-          
             _db.UserDb.Add(user);
             await _db.SaveChangesAsync();
+
+            // После успешной регистрации автоматически входим
+            await SignInUserAsync(user.Login, user.Email, user.Role);
             return true;
         }
 
         public async Task<bool> LoginAsync(string login, string password)
         {
-           
             var user = await _db.UserDb.FirstOrDefaultAsync(u => u.Login == login || u.Email == login);
             if (user == null) return false;
 
-            return _hasher.VerifyPassword(password, user.PasswordHash);
+            if (!_hasher.VerifyPassword(password, user.PasswordHash)) return false;
+
+            // Создаём Cookie-аутентификацию
+            await SignInUserAsync(user.Login, user.Email, user.Role);
+            return true;
+        }
+
+        private async Task SignInUserAsync(string login, string email, string role)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            if (httpContext == null) return;
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, login ?? string.Empty),
+                new Claim(ClaimTypes.Email, email ?? string.Empty),
+                new Claim(ClaimTypes.Role, role ?? string.Empty)
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
     }
 }

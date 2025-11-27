@@ -13,9 +13,9 @@ namespace EduMaster.Domain.Models
         public DateTime CreatedAt { get; set; } 
 
         // Связь с категорией (Внешний ключ)
-        public int CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         public Category? Category { get; set; }
-
+        
         // Связь: У одного курса много картинок
         public List<CourseImage> Images { get; set; } 
     }

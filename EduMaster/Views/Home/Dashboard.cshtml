@@ -1,0 +1,265 @@
+﻿@model string
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/cabinet.css" asp-append-version="true" />
+}
+
+@{
+    ViewData["Title"] = "Личный кабинет — EduMaster";
+}
+
+<main>
+
+    <!-- HERO СЕКЦИЯ -->
+    <section id="dashboard-hero" class="page-section home-hero">
+        <div class="hero-content">
+            <h1>Привет, <span class="highlight">@Model</span> 👋</h1>
+            <p>Добро пожаловать в EduMaster — твое пространство для обучения</p>
+        </div>
+    </section>
+
+
+    <!-- ОСНОВНОЙ КОНТЕЙНЕР С ПРОФИЛЕМ -->
+    <div class="dashboard-container">
+
+        <!-- Боковая панель -->
+        <aside class="dashboard-sidebar">
+            <div class="user-card">
+                <div class="user-avatar">@Model.Substring(0, 1).ToUpper()</div>
+                <h2 class="user-name">@Model</h2>
+                <p class="user-role">Студент</p>
+
+                <form asp-action="Logout" method="post">
+                    <button class="btn-logout">Выйти</button>
+                </form>
+            </div>
+
+            <!-- СТАТИСТИКА -->
+            <div class="stats-card">
+                <h3>Ваша статистика</h3>
+                <div class="stat-item">
+                    <p class="stat-value">@(ViewBag.MyCourses?.Count ?? 0)</p>
+                    <p class="stat-label">записано курсов</p>
+                </div>
+                <div class="stat-item">
+                    <p class="stat-value">@(ViewBag.AllCourses?.Count ?? 0)</p>
+                    <p class="stat-label">доступно курсов</p>
+                </div>
+            </div>
+        </aside>
+
+
+        <!-- ОСНОВНОЙ КОНТЕНТ -->
+        <section class="dashboard-content">
+
+            <!-- МОИ КУРСЫ -->
+            <section class="dashboard-section">
+                <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Мои курсы</h2>
+
+                @if (ViewBag.MyCourses?.Count == 0)
+                {
+                    <div class="empty-block">
+                        <i class="fa-solid fa-folder-open empty-icon"></i>
+                        <p>Вы пока не записаны на курсы.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="course-grid">
+                        @foreach (var course in ViewBag.MyCourses)
+                        {
+                            <div class="course-card">
+                                <div class="course-cover">📚</div>
+                                <h3>@course.Title</h3>
+                                <p>@course.Description</p>
+
+                                <form asp-action="RemoveCourse" method="post">
+                                    <input type="hidden" name="id" value="@course.Id" />
+                                    <button class="btn-danger">Отписаться</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+
+
+            <!-- ДОСТУПНЫЕ КУРСЫ -->
+            <section class="dashboard-section">
+                <h2 class="section-title"><i class="fa-solid fa-book"></i> Доступные курсы</h2>
+
+                @if (ViewBag.AllCourses?.Count == 0)
+                {
+                    <p class="no-courses-text">Нет доступных курсов.</p>
+                }
+                else
+                {
+                    <div class="course-grid">
+                        @foreach (var course in ViewBag.AllCourses)
+                        {
+                            <div class="course-card">
+                                <div class="course-cover">📖</div>
+                                <h3>@course.Title</h3>
+                                <p>@course.Description</p>
+
+                                <div class="course-footer">
+                                    <p class="course-price">@course.Price ₽</p>
+
+                                    <form asp-action="AddCourse" method="post">
+                                        <input type="hidden" name="id" value="@course.Id" />
+                                        <button class="btn-primary">Записаться</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+
+        </section>
+
+    </div>
+
+
+    <!-- О НАС (из Index) -->
+    <section id="about-section" class="page-section about">
+        <h1 class="section-title">О нас</h1>
+
+        <div class="about-grid">
+            <div class="about-text">
+                <h2>Образование нового поколения</h2>
+                <p>
+                    <strong>EduMaster</strong> — это интерактивная платформа для тех, кто стремится к росту.
+                    Мы объединяем студентов, преподавателей и экспертов из разных сфер, создавая пространство для развития и обмена знаниями.
+                </p>
+                <p>
+                    С нами ты сможешь учиться в удобное время, в комфортном темпе и в интересной форме — с видеоуроками, тестами и реальными проектами.
+                </p>
+
+                <ul class="about-benefits">
+                    <li><i class="fa-solid fa-chalkboard-user"></i> Преподаватели с опытом работы</li>
+                    <li><i class="fa-solid fa-certificate"></i> Сертификаты по окончании курсов</li>
+                    <li><i class="fa-solid fa-user"></i> Активное сообщество студентов</li>
+                    <li><i class="fa-solid fa-clock"></i> Гибкое расписание занятий</li>
+                </ul>
+            </div>
+
+            <div class="about-image">
+                <img src="~/img/command.jpg" alt="Наша команда" />
+            </div>
+        </div>
+
+        <div class="about-extra">
+            <div class="stat">
+                <h3>10,000+</h3>
+                <p>Активных студентов</p>
+            </div>
+            <div class="stat">
+                <h3>250+</h3>
+                <p>Опытных преподавателей</p>
+            </div>
+            <div class="stat">
+                <h3>500+</h3>
+                <p>Курсов и программ</p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ОТЗЫВЫ (из Index) -->
+    <section id="reviews-section" class="page-section reviews">
+        <h1 class="section-title">Отзывы студентов</h1>
+
+        <div class="reviews-container">
+            <div class="review-card">
+                <p>"EduMaster помог мне освоить веб-разработку с нуля! Отличные преподаватели и полезные задания."</p>
+                <h3>— Марина К.</h3>
+            </div>
+            <div class="review-card">
+                <p>"Очень понравилось обучение по Data Science. Всё объясняется просто и понятно."</p>
+                <h3>— Алексей Н.</h3>
+            </div>
+            <div class="review-card">
+                <p>"После курсов маркетинга я смогла устроиться в рекламное агентство. Спасибо EduMaster!"</p>
+                <h3>— Екатерина В.</h3>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ПАРТНЁРЫ (из Index) -->
+    <section id="partners-section" class="page-section partners">
+        <h1 class="section-title">Наши партнёры</h1>
+        <div class="partners-logos">
+            <img src="~/img/partner1.jpg" alt="Partner 1" />
+            <img src="~/img/partner2.jpg" alt="Partner 2" />
+            <img src="~/img/partner3.jpg" alt="Partner 3" />
+            <img src="~/img/partner4.jpg" alt="Partner 4" />
+        </div>
+    </section>
+
+
+    <!-- КОНТАКТЫ (из Index) -->
+    <section id="contacts-section" class="page-section contacts">
+        <h1 class="section-title">Контакты</h1>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <p><i class="fa-solid fa-location-dot"></i> <strong>Адрес:</strong> г. Тирасполь, ул. Магистральная, 5</p>
+                <p><i class="fa-solid fa-phone"></i> <strong>Телефон:</strong> +373 533-9-00-00</p>
+                <p><i class="fa-solid fa-envelope"></i> <strong>Email:</strong> info@edumaster.com</p>
+
+                <p>Мы открыты с <strong>понедельника по пятницу</strong>, 9:00–18:00.<br>
+                Следите за нами в соцсетях, чтобы быть в курсе новостей!</p>
+
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="map-wrapper">
+                <iframe
+                    src="https://www.google.com/maps?q=Тирасполь,+ул.+Магистральная,+5&output=embed"
+                    width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- СООБЩЕНИЕ (из Index) -->
+    <section id="message-section" class="page-section">
+        <form id="messageForm" class="message-form">
+            <div class="form-group">
+                <label for="name">Ваше имя</label>
+                <input type="text" id="name" required />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required />
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Тема</label>
+                <input type="text" id="subject" required />
+            </div>
+
+            <div class="form-group">
+                <label for="message">Сообщение</label>
+                <textarea id="message" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-button">Отправить</button>
+
+            <p id="responseMsg" style="margin-top:10px;font-weight:600;"></p>
+        </form>
+    </section>
+
+</main>
+
+<!-- Скрипты -->
+<script src="~/js/home_script.js" asp-append-version="true"></script>

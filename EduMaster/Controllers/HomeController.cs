@@ -1,15 +1,118 @@
 using Microsoft.AspNetCore.Mvc;
 using EduMaster.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
+using System;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using EduMaster.Domain.ModelsDb;
 
 namespace EduMaster.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly ICourseService _courseService;
 
-        public HomeController(IAuthService authService)
+        public HomeController(IAuthService authService, ICourseService courseService)
         {
             _authService = authService;
+            _courseService = courseService;
+        }
+
+        // ================= ГЛАВНАЯ =================
+
+        public async Task<IActionResult> Index()
+        {
+            var courses = await _courseService.GetActiveCoursesAsync();
+            ViewBag.AllCourses = courses;
+            return View();
+        }
+
+        // ================= DASHBOARD =================
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Dashboard()
+        {
+            string userName = User.Identity?.Name ?? "Пользователь";
+
+            // Получаем id курсов из сессии
+            var stored = HttpContext.Session.GetString("myCourses");
+            List<Guid> selectedIds = string.IsNullOrEmpty(stored)
+                ? new List<Guid>()
+                : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
+
+            // Загружаем все курсы из БД
+            var allCourses = await _courseService.GetActiveCoursesAsync();
+
+            // Мои курсы
+            var myCourses = allCourses
+                .Where(c => selectedIds.Contains(c.Id))
+                .ToList();
+
+            // Доступные курсы
+            var availableCourses = allCourses
+                .Where(c => !selectedIds.Contains(c.Id))
+                .ToList();
+
+            ViewBag.MyCourses = myCourses;
+            ViewBag.AllCourses = availableCourses;
+
+            return View("Dashboard", userName);
+        }
+
+        // ================= ЗАПИСАТЬСЯ =================
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddCourse(Guid id)
+        {
+            var stored = HttpContext.Session.GetString("myCourses");
+
+            List<Guid> ids = string.IsNullOrEmpty(stored)
+                ? new List<Guid>()
+                : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
+
+            if (!ids.Contains(id))
+                ids.Add(id);
+
+            HttpContext.Session.SetString("myCourses",
+                System.Text.Json.JsonSerializer.Serialize(ids));
+
+            return RedirectToAction("Dashboard");
+        }
+
+        // ================= ОТПИСАТЬСЯ =================
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult RemoveCourse(Guid id)
+        {
+            var stored = HttpContext.Session.GetString("myCourses");
+
+            List<Guid> ids = string.IsNullOrEmpty(stored)
+                ? new List<Guid>()
+                : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
+
+            if (ids.Contains(id))
+                ids.Remove(id);
+
+            HttpContext.Session.SetString("myCourses",
+                System.Text.Json.JsonSerializer.Serialize(ids));
+
+            return RedirectToAction("Dashboard");
+        }
+
+        // ================= ВЫХОД =================
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
         }
 
         // ================= РЕГИСТРАЦИЯ =================
@@ -20,27 +123,18 @@ namespace EduMaster.Controllers
         {
             var errors = new List<string>();
 
-            if (string.IsNullOrWhiteSpace(model.Email))
-                errors.Add("Email обязателен");
-            if (string.IsNullOrWhiteSpace(model.Login))
-                errors.Add("Логин обязателен");
-            if (string.IsNullOrWhiteSpace(model.Password))
-                errors.Add("Пароль обязателен");
-            if (model.Password != model.PasswordConfirm)
-                errors.Add("Пароли не совпадают");
+            if (string.IsNullOrWhiteSpace(model.Email)) errors.Add("Email обязателен");
+            if (string.IsNullOrWhiteSpace(model.Login)) errors.Add("Логин обязателен");
+            if (string.IsNullOrWhiteSpace(model.Password)) errors.Add("Пароль обязателен");
+            if (model.Password != model.PasswordConfirm) errors.Add("Пароли не совпадают");
 
-            if (errors.Any())
-                return Json(new { isSuccess = false, errors });
+            if (errors.Any()) return Json(new { isSuccess = false, errors });
 
             try
             {
-                var user = await _authService.RegisterAsync(
-                    model.Login,
-                    model.Email,
-                    model.Password
-                );
+                var result = await _authService.RegisterAsync(model.Email, model.Login, model.Password);
 
-                if (user == null)
+                if (!result)
                     return Json(new { isSuccess = false, errors = new[] { "Пользователь уже существует" } });
 
                 return Json(new { isSuccess = true });
@@ -57,27 +151,19 @@ namespace EduMaster.Controllers
         [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.LoginOrEmail) ||
-                string.IsNullOrWhiteSpace(model.Password))
-            {
-                return Json(new
-                {
-                    isSuccess = false,
-                    errors = new[] { "Введите логин или email и пароль" }
-                });
-            }
+            if (string.IsNullOrWhiteSpace(model.LoginOrEmail) || string.IsNullOrWhiteSpace(model.Password))
+                return Json(new { isSuccess = false, errors = new[] { "Введите логин и пароль" } });
 
-            var user = await _authService.LoginAsync(model.LoginOrEmail, model.Password);
+            var result = await _authService.LoginAsync(model.LoginOrEmail, model.Password);
 
-            if (user == null)
-                return Json(new { isSuccess = false, errors = new[] { "Неверный логин/email или пароль" } });
+            if (!result)
+                return Json(new { isSuccess = false, errors = new[] { "Неверный логин или пароль" } });
 
             return Json(new { isSuccess = true });
         }
 
-        // ================= VIEW =================
+        // ================= ПРОСТЫЕ VIEW =================
 
-        public IActionResult Index() => View();
         public IActionResult AboutUs() => View();
         public IActionResult Services() => View();
         public IActionResult Contacts() => View();

@@ -1,11 +1,13 @@
 ﻿/* ===================== ОТКРЫТИЕ / ЗАКРЫТИЕ МОДАЛКИ ===================== */
 
 function openModal() {
-    document.getElementById("login-registration-container").style.display = "flex";
+    const container = document.getElementById("login-registration-container");
+    if (container) container.style.display = "flex";
 }
 
 function closeModal() {
-    document.getElementById("login-registration-container").style.display = "none";
+    const container = document.getElementById("login-registration-container");
+    if (container) container.style.display = "none";
 }
 
 /* ======================== ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ======================== */
@@ -32,66 +34,94 @@ function switchToRegister() {
 
 /* ===================== AJAX — РЕГИСТРАЦИЯ ===================== */
 
-document.getElementById("form_signup").addEventListener("submit", async function (e) {
-    e.preventDefault();
+const formSignup = document.getElementById("form_signup");
 
-    let dto = {
-        email: document.getElementById("register-email").value,
-        login: document.getElementById("register-login").value,
-        password: document.getElementById("register-password").value,
-        passwordConfirm: document.getElementById("register-password-confirm").value
-    };
+if (formSignup) {
+    formSignup.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-    let res = await fetch("/Home/Register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dto)
+        let dto = {
+            email: document.getElementById("register-email").value,
+            login: document.getElementById("register-login").value,
+            password: document.getElementById("register-password").value,
+            passwordConfirm: document.getElementById("register-password-confirm").value
+        };
+
+        try {
+            let res = await fetch("/Home/Register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dto)
+            });
+
+            let data = await res.json();
+
+            let errBox = document.getElementById("error-messages-register");
+            if (errBox) errBox.innerHTML = "";
+
+            if (!data.isSuccess) {
+                if (errBox) {
+                    data.errors.forEach(err => {
+                        errBox.innerHTML += `<div>${err}</div>`;
+                    });
+                } else {
+                    alert(data.errors.join("\n"));
+                }
+                return;
+            }
+
+            // УСПЕХ: Переходим в личный кабинет
+            window.location.href = '/Home/Dashboard';
+
+        } catch (error) {
+            console.error("Ошибка при регистрации:", error);
+            alert("Произошла ошибка соединения с сервером.");
+        }
     });
-
-    let data = await res.json();
-
-    let errBox = document.getElementById("error-messages-register");
-    errBox.innerHTML = "";
-
-    if (!data.isSuccess) {
-        data.errors.forEach(err => {
-            errBox.innerHTML += `<div>${err}</div>`;
-        });
-        return;
-    }
-
-    // Регистрация успешна
-    location.reload();
-});
+}
 
 /* ===================== AJAX — ВХОД ===================== */
 
-document.getElementById("form_signin").addEventListener("submit", async function (e) {
-    e.preventDefault();
+const formSignin = document.getElementById("form_signin");
 
-    let dto = {
-        loginOrEmail: document.getElementById("login-email").value,
-        password: document.getElementById("login-password").value
-    };
+if (formSignin) {
+    formSignin.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-    let res = await fetch("/Home/Login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dto)
+        let dto = {
+            loginOrEmail: document.getElementById("login-email").value,
+            password: document.getElementById("login-password").value
+        };
+
+        try {
+            let res = await fetch("/Home/Login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dto)
+            });
+
+            let data = await res.json();
+
+            let errBox = document.getElementById("error-messages-login");
+            if (errBox) errBox.innerHTML = "";
+
+            if (!data.isSuccess) {
+                if (errBox) {
+                    data.errors.forEach(err => {
+                        errBox.innerHTML += `<div>${err}</div>`;
+                    });
+                } else {
+                    alert(data.errors.join("\n"));
+                }
+                return;
+            }
+
+            // УСПЕХ: Переходим в личный кабинет
+            window.location.href = '/Home/Dashboard';
+
+        } catch (error) {
+            console.error("Ошибка при входе:", error);
+            alert("Произошла ошибка соединения с сервером.");
+        }
     });
-
-    let data = await res.json();
-
-    let errBox = document.getElementById("error-messages-login");
-    errBox.innerHTML = "";
-
-    if (!data.isSuccess) {
-        data.errors.forEach(err => {
-            errBox.innerHTML += `<div>${err}</div>`;
-        });
-        return;
-    }
-
-    // Успешный вход
-    location.reload();
-});
+}
