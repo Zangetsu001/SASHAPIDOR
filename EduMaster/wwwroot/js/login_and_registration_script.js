@@ -125,3 +125,32 @@ if (formSignin) {
         }
     });
 }
+
+/* ===================== GOOGLE LOGIN HANDLER ===================== */
+function handleGoogleLogin(response) {
+    console.log("Google Token:", response.credential);
+
+    // Создаем данные формы для отправки на сервер
+    const formData = new FormData();
+    formData.append("credential", response.credential);
+
+    // Отправляем токен на наш бэкенд
+    fetch("/Home/GoogleLogin", {
+        method: "POST",
+        body: formData
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '/Home/Dashboard';
+            } else {
+                const errBox = document.getElementById("error-messages-login");
+                if (errBox) errBox.innerText = data.message;
+                else alert(data.message);
+            }
+        })
+        .catch(err => {
+            console.error("Ошибка Google Auth:", err);
+            alert("Ошибка соединения с сервером.");
+        });
+}

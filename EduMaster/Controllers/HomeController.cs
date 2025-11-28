@@ -8,6 +8,10 @@ using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using EduMaster.Domain.ModelsDb;
+using EduMaster.DAL;
+using Microsoft.EntityFrameworkCore;
+using Google.Apis.Auth;
+using System.Security.Claims;
 
 namespace EduMaster.Controllers
 {
@@ -15,11 +19,13 @@ namespace EduMaster.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ICourseService _courseService;
+        private readonly ApplicationDbContext _context; // Нам нужен контекст, чтобы искать пользователя
 
-        public HomeController(IAuthService authService, ICourseService courseService)
+        public HomeController(IAuthService authService, ICourseService courseService, ApplicationDbContext context)
         {
             _authService = authService;
             _courseService = courseService;
+            _context = context;
         }
 
         // ================= ГЛАВНАЯ =================
@@ -39,21 +45,17 @@ namespace EduMaster.Controllers
         {
             string userName = User.Identity?.Name ?? "Пользователь";
 
-            // Получаем id курсов из сессии
             var stored = HttpContext.Session.GetString("myCourses");
             List<Guid> selectedIds = string.IsNullOrEmpty(stored)
                 ? new List<Guid>()
                 : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
 
-            // Загружаем все курсы из БД
             var allCourses = await _courseService.GetActiveCoursesAsync();
 
-            // Мои курсы
             var myCourses = allCourses
                 .Where(c => selectedIds.Contains(c.Id))
                 .ToList();
 
-            // Доступные курсы
             var availableCourses = allCourses
                 .Where(c => !selectedIds.Contains(c.Id))
                 .ToList();
@@ -113,6 +115,67 @@ namespace EduMaster.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
+        }
+
+        // ================= ВХОД ЧЕРЕЗ GOOGLE (ИСПРАВЛЕННЫЙ) =================
+
+        [HttpPost]
+        public async Task<IActionResult> GoogleLogin(string credential)
+        {
+            try
+            {
+                // 1. Настройки валидации (ВАЖНО: ВСТАВЬТЕ СВОЙ CLIENT ID!)
+                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                {
+                    Audience = new List<string>() { "658972345156-chmbutbtvpqmeflh5jq3hmge1omvqtlt.apps.googleusercontent.com" }
+                };
+
+                var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
+
+                // 2. Ищем пользователя в базе по Email
+                var user = await _context.UserDb.FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+                if (user == null)
+                {
+                    // 3. Если пользователя нет — используем ваш сервис регистрации!
+                    // Генерируем случайный пароль, так как он не нужен при входе через Google
+                    var randomPassword = Guid.NewGuid().ToString();
+                    var login = payload.Name ?? payload.GivenName ?? "GoogleUser";
+
+                    // Используем _authService, который сам захэширует пароль как надо
+                    bool registerResult = await _authService.RegisterAsync(payload.Email, login, randomPassword);
+
+                    if (!registerResult)
+                    {
+                        return Json(new { success = false, message = "Не удалось создать пользователя (возможно, логин занят)." });
+                    }
+
+                    // Получаем созданного пользователя, чтобы взять его данные (Role и т.д.)
+                    user = await _context.UserDb.FirstOrDefaultAsync(u => u.Email == payload.Email);
+                }
+
+                // 4. Входим в систему (создаем куки)
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Login),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties { IsPersistent = true };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Ошибка Google: " + ex.Message });
+            }
         }
 
         // ================= РЕГИСТРАЦИЯ =================

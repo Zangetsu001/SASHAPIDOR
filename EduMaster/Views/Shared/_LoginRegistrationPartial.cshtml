@@ -28,9 +28,23 @@
 
             <div class="divider-text">или войти через</div>
             <div class="social-login-buttons">
-                <a href="#" class="social-btn google">
-                    <img src="~/img/google.jpg" alt="Google" class="social-icon" /> Google
-                </a>
+                <div id="g_id_onload"
+                     data-client_id="658972345156-chmbutbtvpqmeflh5jq3hmge1omvqtlt.apps.googleusercontent.com"
+                     data-context="signin"
+                     data-ux_mode="popup"
+                     data-callback="handleGoogleLogin"
+                     data-auto_prompt="false">
+                </div>
+
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signin_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="320">
+                </div>
             </div>
         </form>
 
@@ -65,9 +79,15 @@
 
             <div class="divider-text">или зарегистрироваться через</div>
             <div class="social-login-buttons">
-                <a href="#" class="social-btn google">
-                    <img src="~/img/google.jpg" alt="Google" class="social-icon" /> Google
-                </a>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-shape="rectangular"
+                     data-theme="outline"
+                     data-text="signup_with"
+                     data-size="large"
+                     data-logo_alignment="left"
+                     data-width="320">
+                </div>
             </div>
         </form>
 
