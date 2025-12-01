@@ -256,3 +256,29 @@
         color: #333;
         transform: rotate(90deg);
     }
+/* === Устранение проблемы Google Sign-In === */
+.google-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* фиксируем высоту, iframe больше не тянет вниз */
+    overflow: hidden; /* скрываем растяжение */
+    width: 100%;
+}
+
+/* стабилизируем iframe */
+.g_id_signin iframe {
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+.g_id_signin {
+    width: 100% !important;
+    text-align: center !important;
+}
+
+/* На всякий случай ограничиваем высоту модалки */
+.form-box {
+    max-height: 90vh;
+    overflow-y: auto;
+}

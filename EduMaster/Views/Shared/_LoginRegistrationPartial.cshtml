@@ -9,6 +9,7 @@
             <button type="button" class="toggle-btn" onclick="switchToRegister()">Регистрация</button>
         </div>
 
+        <!-- ================= ВХОД ================= -->
         <form id="form_signin" class="input-group-signin">
             <div class="form-input">
                 <i class="fa fa-envelope icon"></i>
@@ -27,7 +28,9 @@
             <button type="submit" class="submit-btn">Войти</button>
 
             <div class="divider-text">или войти через</div>
-            <div class="social-login-buttons">
+
+            <!-- === ОБЁРТКА GOOGLE SIGN-IN === -->
+            <div class="google-wrapper">
                 <div id="g_id_onload"
                      data-client_id="658972345156-chmbutbtvpqmeflh5jq3hmge1omvqtlt.apps.googleusercontent.com"
                      data-context="signin"
@@ -48,6 +51,7 @@
             </div>
         </form>
 
+        <!-- ================= РЕГИСТРАЦИЯ ================= -->
         <form id="form_signup" class="input-group-signup hidden">
             <div class="form-input">
                 <i class="fa fa-envelope icon"></i>
@@ -78,7 +82,8 @@
             <button type="submit" class="submit-btn">Зарегистрироваться</button>
 
             <div class="divider-text">или зарегистрироваться через</div>
-            <div class="social-login-buttons">
+
+            <div class="google-wrapper">
                 <div class="g_id_signin"
                      data-type="standard"
                      data-shape="rectangular"

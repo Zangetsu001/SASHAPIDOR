@@ -41,30 +41,38 @@ namespace EduMaster.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Dashboard()
+        public IActionResult Dashboard()
         {
-            string userName = User.Identity?.Name ?? "ѕользователь";
+            // ≈сли открыли не через AJAX Ц вернЄмс€ на главную
+            if (Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+            {
+                return RedirectToAction("_DashboardPartial");
+            }
 
+            var userName = User.Identity?.Name ?? "√ость";
+
+            // „итаем из сессии список выбранных курсов
             var stored = HttpContext.Session.GetString("myCourses");
-            List<Guid> selectedIds = string.IsNullOrEmpty(stored)
+
+            List<Guid> ids = string.IsNullOrEmpty(stored)
                 ? new List<Guid>()
                 : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
 
-            var allCourses = await _courseService.GetActiveCoursesAsync();
-
-            var myCourses = allCourses
-                .Where(c => selectedIds.Contains(c.Id))
+            // ћои курсы (из CourseDb, Id есть в сессии)
+            ViewBag.MyCourses = _context.CourseDb
+                .Where(c => ids.Contains(c.Id))
                 .ToList();
 
-            var availableCourses = allCourses
-                .Where(c => !selectedIds.Contains(c.Id))
+            // ƒоступные курсы (все остальные)
+            ViewBag.AllCourses = _context.CourseDb
+                .Where(c => !ids.Contains(c.Id))
                 .ToList();
 
-            ViewBag.MyCourses = myCourses;
-            ViewBag.AllCourses = availableCourses;
-
-            return View("Dashboard", userName);
+            // ¬ partial передаЄм только им€ пользовател€ как модель (string)
+            return PartialView("_DashboardPartial", userName);
         }
+
+
 
         // ================= «јѕ»—ј“№—я =================
 
@@ -84,11 +92,13 @@ namespace EduMaster.Controllers
             HttpContext.Session.SetString("myCourses",
                 System.Text.Json.JsonSerializer.Serialize(ids));
 
-            return RedirectToAction("Dashboard");
+            return Json(new { success = true });
         }
 
-        // ================= ќ“ѕ»—ј“№—я =================
 
+
+
+        // ================= ќ“ѕ»—ј“№—я =================
         [Authorize]
         [HttpPost]
         public IActionResult RemoveCourse(Guid id)
@@ -105,7 +115,7 @@ namespace EduMaster.Controllers
             HttpContext.Session.SetString("myCourses",
                 System.Text.Json.JsonSerializer.Serialize(ids));
 
-            return RedirectToAction("Dashboard");
+            return Json(new { success = true });
         }
 
         // ================= ¬џ’ќƒ =================
@@ -245,7 +255,7 @@ namespace EduMaster.Controllers
         public string PasswordConfirm { get; set; } = string.Empty;
     }
 
-    public class LoginViewModel
+    public class LoginViewModel 
     {
         public string LoginOrEmail { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;

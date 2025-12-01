@@ -1,0 +1,81 @@
+﻿@model string
+@using EduMaster.Domain.ModelsDb
+@{
+    Layout = null;
+
+    // Чтобы не писать длинные касты по 5 раз
+    var myCourses = ViewBag.MyCourses as List<CourseDb>;
+    var allCourses = ViewBag.AllCourses as List<CourseDb>;
+}
+
+<div class="modal-header-custom">
+    <div>
+        <h2 class="dashboard-title">Личный кабинет</h2>
+        <p class="dashboard-subtitle">Студент: <strong>@Model</strong></p>
+    </div>
+</div>
+
+<div class="modal-body-custom">
+
+    <h3 class="section-title"><i class="fas fa-graduation-cap"></i> Мои курсы</h3>
+
+    @if (myCourses != null && myCourses.Any())
+    {
+        <div class="courses-list">
+            @foreach (var course in myCourses)
+            {
+                <div class="course-item">
+                    <div>
+                        <span class="course-name">@course.title</span>
+                        <span class="course-status">Активен</span>
+                    </div>
+
+                    <button onclick="removeCourse('@course.Id')" class="action-btn remove-btn">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-block">
+            <i class="far fa-folder-open empty-icon"></i>
+            Вы пока не записаны ни на один курс.
+        </div>
+    }
+
+    <h3 class="section-title"><i class="fas fa-fire"></i> Доступные курсы</h3>
+
+    @if (allCourses != null && allCourses.Any())
+    {
+        <div class="courses-list">
+            @foreach (var course in allCourses)
+            {
+                <div class="course-item">
+                    <div>
+                        <span class="course-name">@course.title</span>
+                        <span class="course-price">@course.price ₽</span>
+                    </div>
+
+                    <button onclick="addCourseToDashboard('@course.Id')" class="action-btn add-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="empty-text">Нет доступных курсов.</p>
+    }
+
+</div>
+
+<div class="modal-footer-custom">
+    <form asp-controller="Home" asp-action="Logout" method="post">
+        <button type="submit" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта
+        </button>
+    </form>
+</div>
