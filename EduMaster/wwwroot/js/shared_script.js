@@ -42,14 +42,13 @@ function topFunction() {
 
 // Открыть модалку и загрузить данные
 function openDashboard() {
-    fetch("/Home/_DashboardPartial")
+    fetch("/Home/Dashboard") // <-- Исправлено на Dashboard
         .then(r => r.text())
         .then(html => {
             document.getElementById("dashboard-content").innerHTML = html;
             document.getElementById("dashboard-modal").style.display = "flex";
         });
 }
-
 
 // Закрыть модалку
 function closeDashboard() {

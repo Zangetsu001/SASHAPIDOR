@@ -43,35 +43,33 @@ namespace EduMaster.Controllers
         [HttpGet]
         public IActionResult Dashboard()
         {
-            // Если открыли не через AJAX – вернёмся на главную
-            if (Request.Headers["X-Requested-With"] != "XMLHttpRequest")
-            {
-                return RedirectToAction("Index");
-            }
+            // 1. Если это не AJAX запрос, лучше перенаправить на Главную (Index), 
+            // так как метода _DashboardPartial не существует.
+            //if (Request.Headers["X-Requested-With"] != "XMLHttpRequest")
+            //{
+            //    return RedirectToAction("Index");
+            //}
 
             var userName = User.Identity?.Name ?? "Гость";
 
-            // Читаем из сессии список выбранных курсов
+            // Логика получения курсов (без изменений)
             var stored = HttpContext.Session.GetString("myCourses");
 
             List<Guid> ids = string.IsNullOrEmpty(stored)
                 ? new List<Guid>()
                 : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
 
-            // Мои курсы (из CourseDb, Id есть в сессии)
             ViewBag.MyCourses = _context.CourseDb
                 .Where(c => ids.Contains(c.Id))
                 .ToList();
 
-            // Доступные курсы (все остальные)
             ViewBag.AllCourses = _context.CourseDb
                 .Where(c => !ids.Contains(c.Id))
                 .ToList();
 
-            // В partial передаём только имя пользователя как модель (string)
-            return PartialView("Dashboard", userName);
+            // 2. ВАЖНО: Возвращаем "Dashboard", так как твой файл называется Dashboard.cshtml
+            return PartialView("_DashboardPartial", userName);
         }
-
 
 
         // ================= ЗАПИСАТЬСЯ =================
