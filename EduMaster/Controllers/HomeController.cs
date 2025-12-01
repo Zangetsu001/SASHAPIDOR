@@ -46,7 +46,7 @@ namespace EduMaster.Controllers
             // Если открыли не через AJAX – вернёмся на главную
             if (Request.Headers["X-Requested-With"] != "XMLHttpRequest")
             {
-                return RedirectToAction("_DashboardPartial");
+                return RedirectToAction("Index");
             }
 
             var userName = User.Identity?.Name ?? "Гость";
@@ -69,7 +69,7 @@ namespace EduMaster.Controllers
                 .ToList();
 
             // В partial передаём только имя пользователя как модель (string)
-            return PartialView("_DashboardPartial", userName);
+            return PartialView("Dashboard", userName);
         }
 
 
