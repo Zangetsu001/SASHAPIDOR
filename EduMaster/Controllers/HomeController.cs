@@ -1,17 +1,18 @@
-using Microsoft.AspNetCore.Mvc;
+
+using EduMaster.Domain.ModelsDb;
 using EduMaster.Services;
-using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Collections.Generic;
-using System;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using EduMaster.Domain.ModelsDb;
-using EduMaster.DAL;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Google.Apis.Auth;
+using Microsoft.Extensions.Caching.Memory;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace EduMaster.Controllers
 {
@@ -20,12 +21,16 @@ namespace EduMaster.Controllers
         private readonly IAuthService _authService;
         private readonly ICourseService _courseService;
         private readonly ApplicationDbContext _context; // Нам нужен контекст, чтобы искать пользователя
+        private readonly IEmailService _emailService; // Добавили
+        private readonly IMemoryCache _cache;
 
-        public HomeController(IAuthService authService, ICourseService courseService, ApplicationDbContext context)
+        public HomeController(IAuthService authService, ICourseService courseService, ApplicationDbContext context, IEmailService emailService, IMemoryCache cache)
         {
             _authService = authService;
             _courseService = courseService;
             _context = context;
+            _emailService = emailService;
+            _cache = cache;
         }
 
         // ================= ГЛАВНАЯ =================
@@ -43,16 +48,9 @@ namespace EduMaster.Controllers
         [HttpGet]
         public IActionResult Dashboard()
         {
-            // 1. Если это не AJAX запрос, лучше перенаправить на Главную (Index), 
-            // так как метода _DashboardPartial не существует.
-            //if (Request.Headers["X-Requested-With"] != "XMLHttpRequest")
-            //{
-            //    return RedirectToAction("Index");
-            //}
+    
 
             var userName = User.Identity?.Name ?? "Гость";
-
-            // Логика получения курсов (без изменений)
             var stored = HttpContext.Session.GetString("myCourses");
 
             List<Guid> ids = string.IsNullOrEmpty(stored)
@@ -67,7 +65,6 @@ namespace EduMaster.Controllers
                 .Where(c => !ids.Contains(c.Id))
                 .ToList();
 
-            // 2. ВАЖНО: Возвращаем "Dashboard", так как твой файл называется Dashboard.cshtml
             return PartialView("_DashboardPartial", userName);
         }
 
@@ -193,28 +190,83 @@ namespace EduMaster.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             var errors = new List<string>();
-
             if (string.IsNullOrWhiteSpace(model.Email)) errors.Add("Email обязателен");
             if (string.IsNullOrWhiteSpace(model.Login)) errors.Add("Логин обязателен");
             if (string.IsNullOrWhiteSpace(model.Password)) errors.Add("Пароль обязателен");
             if (model.Password != model.PasswordConfirm) errors.Add("Пароли не совпадают");
 
+            // Проверяем, есть ли уже такой юзер в БД
+            var userExists = await _context.UserDb.AnyAsync(u => u.Email == model.Email || u.Login == model.Login);
+            if (userExists) errors.Add("Пользователь с таким Email или Логином уже существует");
+
             if (errors.Any()) return Json(new { isSuccess = false, errors });
 
+            // Генерируем код (4 цифры)
+            var code = new Random().Next(1000, 9999).ToString();
+
+            // Сохраняем данные пользователя и код в Кэш на 10 минут
+            // Ключ кэша - это Email пользователя
+            _cache.Set(model.Email, new RegistrationCacheModel
+            {
+                Login = model.Login,
+                Password = model.Password,
+                Code = code
+            }, TimeSpan.FromMinutes(10));
+
+            // Отправляем письмо
             try
             {
-                var result = await _authService.RegisterAsync(model.Email, model.Login, model.Password);
+                var emailBody = GetHtmlEmailTemplate(model.Login, code);
 
-                if (!result)
-                    return Json(new { isSuccess = false, errors = new[] { "Пользователь уже существует" } });
-
-                return Json(new { isSuccess = true });
+                await _emailService.SendEmailAsync(model.Email, "Подтверждение регистрации EduMaster", emailBody);
             }
             catch (Exception ex)
             {
-                return Json(new { isSuccess = false, errors = new[] { ex.Message } });
+                return Json(new { isSuccess = false, errors = new[] { "Ошибка отправки письма: " + ex.Message } });
             }
+
+            // Возвращаем успех и говорим фронтенду показать окно ввода кода
+            return Json(new { isSuccess = true, requireCode = true, email = model.Email });
         }
+
+        // ================= РЕГИСТРАЦИЯ (ШАГ 2: ПРОВЕРКА КОДА) =================
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> ConfirmRegistration([FromBody] ConfirmViewModel model)
+        {
+            // Пытаемся достать данные из кэша по Email
+            if (!_cache.TryGetValue(model.Email, out RegistrationCacheModel cachedUser))
+            {
+                return Json(new { isSuccess = false, message = "Время действия кода истекло или email неверный. Попробуйте снова." });
+            }
+
+            if (cachedUser.Code != model.Code)
+            {
+                return Json(new { isSuccess = false, message = "Неверный код подтверждения." });
+            }
+
+            // Если код верный - регистрируем реально
+            var result = await _authService.RegisterAsync(model.Email, cachedUser.Login, cachedUser.Password);
+
+            if (!result)
+                return Json(new { isSuccess = false, message = "Ошибка при создании пользователя в БД." });
+
+            // Удаляем из кэша
+            _cache.Remove(model.Email);
+
+            return Json(new { isSuccess = true });
+        }
+
+        // Вспомогательный класс для кэша (можно добавить внизу файла)
+        private class RegistrationCacheModel
+        {
+            public string Login { get; set; }
+            public string Password { get; set; }
+            public string Code { get; set; }
+        }
+
+
+
 
         // ================= ВХОД =================
 
@@ -241,7 +293,29 @@ namespace EduMaster.Controllers
         public IActionResult SiteInformation() => View();
         public IActionResult Privacy() => View();
         public IActionResult Error() => View();
+        private string GetHtmlEmailTemplate(string login, string code)
+        {
+            string body = $@"
+            <div style='font-family: Helvetica, Arial, sans-serif; min-width: 320px; max-width: 600px; margin: 0 auto; overflow: auto; line-height: 2;'>
+                <div style='margin: 20px auto; width: 90%; padding: 20px 0;'>
+                    <div style='border-bottom: 1px solid #eee; padding-bottom: 10px;'>
+                        <a href='#' style='font-size: 1.4em; color: #00466a; text-decoration: none; font-weight: 600;'>EduMaster</a>
+                    </div>
+                    <p style='font-size: 1.1em;'>Здравствуйте, <b>{login}</b>!</p>
+                    <p>Спасибо за регистрацию на платформе EduMaster. Для завершения создания аккаунта используйте следующий код подтверждения:</p>
+                    <h2 style='background: #00466a; margin: 0 auto; width: max-content; padding: 0 10px; color: #fff; border-radius: 4px; letter-spacing: 4px;'>{code}</h2>
+                    <p style='font-size: 0.9em;'>Этот код действителен в течение 10 минут.</p>
+                    <hr style='border: none; border-top: 1px solid #eee;' />
+                    <div style='float: right; padding: 8px 0; color: #aaa; font-size: 0.8em; line-height: 1; font-weight: 300;'>
+                        <p>EduMaster Inc</p>
+                        <p>Если вы не регистрировались, просто проигнорируйте это письмо.</p>
+                    </div>
+                </div>
+            </div>";
+            return body;
+        }
     }
+}
 
     // ================= DTO =================
 
@@ -257,5 +331,19 @@ namespace EduMaster.Controllers
     {
         public string LoginOrEmail { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-    }
 }
+//private class RegistrationCacheModel
+//{
+//    public string Login { get; set; }
+//    public string Password { get; set; }
+//    public string Code { get; set; }
+//}
+
+
+// DTO для подтверждения (добавь в конец файла)
+public class ConfirmViewModel
+{
+    public string Email { get; set; }
+    public string Code { get; set; }
+}
+

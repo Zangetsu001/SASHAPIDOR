@@ -9,7 +9,6 @@
             <button type="button" class="toggle-btn" onclick="switchToRegister()">Регистрация</button>
         </div>
 
-        <!-- ================= ВХОД ================= -->
         <form id="form_signin" class="input-group-signin">
             <div class="form-input">
                 <i class="fa fa-envelope icon"></i>
@@ -23,13 +22,12 @@
                 <label for="login-password" class="input-label">Пароль</label>
             </div>
 
-            <div id="error-messages-login"></div>
+            <div id="error-messages-login" class="text-danger mb-2 text-center"></div>
 
-            <button type="submit" class="submit-btn">Войти</button>
+            <button type="submit" id="btnLoginSubmit" class="submit-btn">Войти</button>
 
             <div class="divider-text">или войти через</div>
 
-            <!-- === ОБЁРТКА GOOGLE SIGN-IN === -->
             <div class="google-wrapper">
                 <div id="g_id_onload"
                      data-client_id="658972345156-chmbutbtvpqmeflh5jq3hmge1omvqtlt.apps.googleusercontent.com"
@@ -38,7 +36,6 @@
                      data-callback="handleGoogleLogin"
                      data-auto_prompt="false">
                 </div>
-
                 <div class="g_id_signin"
                      data-type="standard"
                      data-shape="rectangular"
@@ -51,8 +48,8 @@
             </div>
         </form>
 
-        <!-- ================= РЕГИСТРАЦИЯ ================= -->
         <form id="form_signup" class="input-group-signup hidden">
+
             <div class="form-input">
                 <i class="fa fa-envelope icon"></i>
                 <input type="email" id="register-email" class="input-field" required placeholder=" ">
@@ -77,9 +74,9 @@
                 <label class="input-label">Повторите пароль</label>
             </div>
 
-            <div id="error-messages-register"></div>
+            <div id="error-messages-register" class="text-danger mb-2 text-center"></div>
 
-            <button type="submit" class="submit-btn">Зарегистрироваться</button>
+            <button type="submit" id="btnRegisterSubmit" class="submit-btn">Зарегистрироваться</button>
 
             <div class="divider-text">или зарегистрироваться через</div>
 
@@ -95,6 +92,26 @@
                 </div>
             </div>
         </form>
+
+        <div id="codeVerificationBlock" class="verification-box" style="display:none;">
+            <div class="verification-icon">
+                <i class="fa fa-envelope-open-text"></i>
+            </div>
+            <h4>Проверьте почту</h4>
+            <p class="verification-text">
+                Мы отправили код подтверждения на:<br>
+                <b id="displayEmail" class="email-highlight"></b>
+            </p>
+
+            <div class="code-input-wrapper">
+                <input type="text" id="verificationCode" class="code-input" placeholder="- - - -" maxlength="4" autocomplete="off">
+            </div>
+
+            <div id="codeError" class="text-danger mb-2 text-center"></div>
+
+            <button id="btnConfirmCode" class="submit-btn btn-confirm">Подтвердить код</button>
+            <button type="button" class="btn-cancel" onclick="window.location.reload()">Отмена</button>
+        </div>
 
         <button class="close-modal-btn" onclick="closeModal()">
             <i class="fa fa-times"></i>

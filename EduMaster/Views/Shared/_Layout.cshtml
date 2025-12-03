@@ -26,7 +26,7 @@
             <nav class="nav-menu">
                 <a href="#home-section">Главная</a>
                 <a href="#about-section">О нас</a>
-                <a href="#features-section">Услуги</a>
+                <a asp-controller="Courses" asp-action="Catalog">Услуги</a>
                 <a href="#contacts-section">Контакты</a>
                 <a href="#message-section">Написать сообщение</a>
             </nav>
@@ -34,16 +34,24 @@
             <div class="header-auth">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <button class="header-button" onclick="openDashboard()">Личный кабинет</button>
+                    <button class="header-button" onclick="openDashboard()">
+                        <i class="fa fa-user"></i> Личный кабинет
+                    </button>
 
-                    <form method="post" action="/Home/Logout">
-                        <button class="header-button">Выйти</button>
+                    <form method="post" asp-controller="Home" asp-action="Logout">
+                        <button type="submit" class="header-button">
+                            <i class="fa fa-sign-out-alt"></i> Выйти
+                        </button>
                     </form>
                 }
                 else
                 {
-                    <button class="header-button" onclick="openModal()">Войти</button>
-                    <button class="header-button" onclick="openModal(); switchToRegister()">Регистрация</button>
+                    <button class="header-button" onclick="openModal()">
+                        <i class="fa fa-sign-in-alt"></i> Войти
+                    </button>
+                    <button class="header-button" onclick="openModal(); switchToRegister()">
+                        <i class="fa fa-user-plus"></i> Регистрация
+                    </button>
                 }
             </div>
         </div>
@@ -86,5 +94,6 @@
     <script src="~/js/home_script.js" asp-append-version="true"></script>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

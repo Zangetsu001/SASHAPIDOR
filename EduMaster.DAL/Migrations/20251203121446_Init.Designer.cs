@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EduMaster.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251126085341_Init")]
+    [Migration("20251203121446_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -86,20 +86,21 @@ namespace EduMaster.DAL.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("course_id")
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text")
+                        .HasColumnName("content_type");
+
+                    b.Property<Guid>("CourseId")
                         .HasColumnType("uuid")
                         .HasColumnName("course_id");
 
-                    b.Property<string>("image_path")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("image_path");
-
-                    b.Property<bool>("is_cover")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_cover");
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("bytea")
+                        .HasColumnName("data");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("CourseImage");
                 });
@@ -138,6 +139,17 @@ namespace EduMaster.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("EduMaster.Domain.ModelsDb.CourseImageDb", b =>
+                {
+                    b.HasOne("EduMaster.Domain.ModelsDb.CourseDb", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
                 });
 #pragma warning restore 612, 618
         }

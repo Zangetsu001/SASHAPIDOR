@@ -8,12 +8,20 @@ namespace EduMaster.Domain.ModelsDb
     public class CourseImageDb
     {
         [Column("id")]
+        [Key]
         public Guid Id { get; set; }
-        [Column("image_path")]
-        public string image_path { get; set; } 
-        [Column("is_cover")]
-        public bool is_cover { get; set; } 
+
         [Column("course_id")]
-        public Guid course_id { get; set; }   // просто поле
+        public Guid CourseId { get; set; }
+
+        [ForeignKey("CourseId")]
+        public virtual CourseDb? Course { get; set; }
+
+        // === ПОЛЯ ДЛЯ ХРАНЕНИЯ ФАЙЛА ===
+        [Column("data")]
+        public byte[]? Data { get; set; }
+
+        [Column("content_type")]
+        public string? ContentType { get; set; }
     }
 }

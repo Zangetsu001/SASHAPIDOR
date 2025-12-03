@@ -2,8 +2,9 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EduMaster.DAL;
-using EduMaster.Models.ViewModels;
+
+using EduMaster.Domain.Models.ViewModels; // <--- ТЕПЕРЬ ЭТО БУДЕТ РАБОТАТЬ
+using EduMaster.Domain.ModelsDb;
 
 namespace EduMaster.Controllers
 {
@@ -16,8 +17,9 @@ namespace EduMaster.Controllers
             _db = db;
         }
 
-        // /Courses
-        public IActionResult Index(string? search, Guid? categoryId)
+        // ================= СТРАНИЦА КУРСОВ (КАТАЛОГ) =================
+        // Можно назвать Catalog или Index, главное чтобы View называлась так же
+        public IActionResult Catalog(string? search, Guid? categoryId)
         {
             var vm = new CoursesIndexViewModel
             {
@@ -25,15 +27,18 @@ namespace EduMaster.Controllers
                 SelectedCategoryId = categoryId
             };
 
-            // ------------------- КАТЕГОРИИ -------------------
+            // 1. Загружаем категории
             vm.Categories = _db.CategoryDb
                                .OrderBy(c => c.name)
-                               .ToList();   // <-- ВАЖНО: List<CategoryDb>, НИ КАКОГО Dictionary!
+                               .ToList();
 
-            // ------------------- КУРСЫ -----------------------
-            var query = _db.CourseDb
-                           .Include(c => c.category_id) // если есть навигационное свойство
-                           .AsQueryable();
+            // 2. Загружаем курсы
+            var query = _db.CourseDb.AsQueryable();
+
+            // ВАЖНО: Я убрал .Include(c => c.category_id), так как это вызывает ошибку.
+            // Если вы добавили навигационное свойство 'Category' в CourseDb.cs, 
+            // то раскомментируйте строку ниже:
+            // query = query.Include(c => c.Category);
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -51,6 +56,43 @@ namespace EduMaster.Controllers
             vm.Courses = query.ToList();
 
             return View(vm);
+        }
+
+        // ================= ДЕТАЛИ КУРСА (API для модального окна) =================
+        [HttpGet]
+        public IActionResult GetCourseDetails(Guid id)
+        {
+            var course = _db.CourseDb.FirstOrDefault(c => c.Id == id);
+            if (course == null) return NotFound();
+
+            // Ищем имя категории вручную (так как Include может не работать без настройки связей)
+            var categoryName = _db.CategoryDb
+                                  .Where(c => c.Id == course.category_id)
+                                  .Select(c => c.name)
+                                  .FirstOrDefault() ?? "Курс";
+
+            return Json(new
+            {
+                title = course.title,
+                description = course.description,
+                price = course.price,
+                category = categoryName
+            });
+        }
+        [HttpGet]
+        public IActionResult GetImage(Guid courseId)
+        {
+            // Ищем картинку, привязанную к курсу
+            var image = _db.CourseImageDb.FirstOrDefault(i => i.CourseId == courseId);
+
+            if (image != null && image.Data != null)
+            {
+                // Возвращаем файл (картинку) браузеру
+                return File(image.Data, image.ContentType ?? "image/jpeg");
+            }
+
+            // Если картинки нет — возвращаем 404
+            return NotFound();
         }
     }
 }

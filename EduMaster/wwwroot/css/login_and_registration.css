@@ -282,3 +282,81 @@
     max-height: 90vh;
     overflow-y: auto;
 }
+/* === СТИЛИ ДЛЯ БЛОКА ПОДТВЕРЖДЕНИЯ === */
+.verification-box {
+    padding: 20px 30px;
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+.verification-icon {
+    font-size: 50px;
+    color: #4CAF50; /* Зеленый цвет */
+    margin-bottom: 15px;
+}
+
+.verification-text {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.email-highlight {
+    color: #333;
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+.code-input-wrapper {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.code-input {
+    width: 150px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    letter-spacing: 10px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.3s;
+}
+
+    .code-input:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+    }
+
+.btn-confirm {
+    background: linear-gradient(to right, #4CAF50, #2E7D32);
+    margin-bottom: 10px;
+}
+
+.btn-cancel {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+    .btn-cancel:hover {
+        color: #333;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

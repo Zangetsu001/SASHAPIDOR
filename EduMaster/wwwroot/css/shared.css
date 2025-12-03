@@ -16,111 +16,108 @@ body {
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     background: #f4f6f9;
     color: #1f2933;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-/* === ХЕДЕР =========================================================== */
-.header-top {
+/* === НОВАЯ ШАПКА САЙТА (ХЕДЕР) ======================================= */
+.main-header {
+    width: 100%;
+    background: linear-gradient(135deg, #0066cc, #0077b6); /* Красивый синий градиент */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    position: fixed; /* Фиксация сверху */
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 12px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 40px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-    background: linear-gradient(135deg, #0066cc, #0077b6);
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-    backdrop-filter: blur(6px);
-    transition: padding 0.25s ease;
 }
 
-    .header-top.scrolled {
-        padding: 8px 40px;
-    }
-
+/* Логотип */
 .logo a {
     font-size: 26px;
     color: #fff;
     text-decoration: none;
     font-weight: 700;
-}
-
-/* === КНОПКИ В ХЕДЕРЕ ================================================ */
-.header-buttons {
     display: flex;
-    gap: 12px;
+    align-items: center;
 }
 
+/* Меню навигации */
+.nav-menu {
+    display: flex;
+    gap: 5px;
+}
+
+    .nav-menu a {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.2s ease;
+    }
+
+        .nav-menu a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+/* === КНОПКИ АВТОРИЗАЦИИ (В РЯД) ===================================== */
+.header-auth {
+    display: flex;
+    gap: 10px; /* Расстояние между кнопками */
+    align-items: center; /* Выравнивание по вертикали */
+}
+
+    /* ВАЖНО: Убираем блочное поведение формы, чтобы кнопка "Выйти" не падала вниз */
+    .header-auth form {
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+/* Общий стиль для всех кнопок в шапке */
 .header-button {
     background: transparent;
-    border: 2px solid #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.8);
     color: white;
-    padding: 8px 16px;
+    padding: 6px 16px;
     border-radius: 30px;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
     cursor: pointer;
-    transition: .25s;
+    transition: 0.25s;
+    white-space: nowrap; /* Запрещаем перенос текста */
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Расстояние между иконкой и текстом */
 }
 
     .header-button:hover {
         background: white;
         color: #0066cc;
+        border-color: white;
         transform: translateY(-1px);
     }
 
-/* === УДАЛЯЕМ ФОНОВУЮ КАРТИНКУ ======================================= */
-.header-image-container {
-    display: none !important;
-}
-
-/* === МЕНЮ СРАЗУ ПОД СИНИМ ХЕДЕРОМ ================================== */
-.header-menu {
-    width: 100%;
-    margin-top: 60px; /* отступ после фиксированного синего хедера */
-
-    background: #1e293b;
-    border-bottom: 2px solid #0f172a;
-    padding: 10px 0;
-    position: sticky;
-    top: 60px;
-    z-index: 900;
-}
-
-.nav-menu ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-    .nav-menu ul li a {
-        text-decoration: none;
-        color: #e5e7eb;
-        padding: 8px 18px;
-        border-radius: 999px;
-        border: 1px solid rgba(148,163,184,0.4);
-        font-size: 13px;
-        font-weight: 500;
-        transition: 0.2s;
-        background: rgba(255,255,255,0.03);
+    .header-button i {
+        font-size: 1.1em;
     }
 
-        .nav-menu ul li a:hover {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            color: white;
-            transform: translateY(-1px);
-        }
-
-/* === КОНТЕНТ ======================================================== */
-.container-section {
-    padding: 40px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    margin-top: 110px; /* чтобы контент не заезжал под хедер */
+/* === ОСНОВНОЙ КОНТЕНТ =============================================== */
+.main-content {
+    margin-top: 80px; /* Отступ под фиксированную шапку */
+    flex: 1; /* Прижимает футер к низу, если контента мало */
 }
 
 /* === ФУТЕР ========================================================== */
@@ -128,7 +125,7 @@ footer {
     background: #1f2937;
     color: #d1d5db;
     padding: 40px 20px;
-    margin-top: 60px;
+    margin-top: auto; /* Footer всегда снизу */
 }
 
 .footer-content {
@@ -136,12 +133,15 @@ footer {
     justify-content: center;
     gap: 40px;
     flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
     .footer-content p {
         display: flex;
-        gap: 8px;
         align-items: center;
+        gap: 10px;
+        margin: 5px 0;
     }
 
     .footer-content i {
@@ -150,84 +150,53 @@ footer {
 
 .footer-bottom {
     text-align: center;
-    margin-top: 20px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255,255,255, 0.15);
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255, 0.1);
+    font-size: 13px;
+    color: #9ca3af;
 }
 
-/* === КНОПКА НАВЕРХ ================================================ */
+/* === КНОПКА "НАВЕРХ" ================================================ */
 #scrollTopBtn {
     display: none;
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 48px;
-    height: 48px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     border: none;
     background: #0066cc;
     color: white;
     cursor: pointer;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-    transition: .25s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: .3s;
+    z-index: 900;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
 }
 
     #scrollTopBtn:hover {
         background: #0053a6;
-        transform: translateY(-4px);
+        transform: translateY(-3px);
     }
 
-/* === АДАПТИВ ======================================================= */
-@media (max-width: 768px) {
-    .header-top {
+/* === АДАПТИВНОСТЬ =================================================== */
+@media (max-width: 900px) {
+    .header-container {
         flex-direction: column;
-        padding: 10px 20px;
-        gap: 6px;
+        gap: 15px;
+        padding: 15px;
     }
 
-    .header-menu {
-        top: 100px;
-        margin-top: 100px;
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
-    .container-section {
-        padding: 20px;
+    .main-content {
+        margin-top: 140px; /* Больше отступ для мобильной шапки */
     }
-}
-.main-header {
-    width: 100%;
-    background: #0066cc;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    position: fixed;
-    top: 0;
-    z-index: 9999;
-}
-
-.header-container {
-    max-width: 1400px;
-    margin: auto;
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-menu a {
-    margin: 0 12px;
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: .2s;
-}
-
-    .nav-menu a:hover {
-        color: #d4e9ff;
-    }
-
-.header-auth button {
-    margin-left: 10px;
-}
-
-.main-content {
-    margin-top: 90px;
 }

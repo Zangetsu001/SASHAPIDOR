@@ -41,20 +41,6 @@ namespace EduMaster.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseImage",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    image_path = table.Column<string>(type: "text", nullable: false),
-                    is_cover = table.Column<bool>(type: "boolean", nullable: false),
-                    course_id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CourseImage", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -69,6 +55,31 @@ namespace EduMaster.DAL.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "CourseImage",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    course_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    data = table.Column<byte[]>(type: "bytea", nullable: true),
+                    content_type = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseImage", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_CourseImage_Course_course_id",
+                        column: x => x.course_id,
+                        principalTable: "Course",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseImage_course_id",
+                table: "CourseImage",
+                column: "course_id");
         }
 
         /// <inheritdoc />
@@ -78,13 +89,13 @@ namespace EduMaster.DAL.Migrations
                 name: "Category");
 
             migrationBuilder.DropTable(
-                name: "Course");
-
-            migrationBuilder.DropTable(
                 name: "CourseImage");
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Course");
         }
     }
 }
