@@ -208,12 +208,32 @@
 
             <div class="form-group">
                 <label for="name">Ваше имя</label>
-                <input type="text" id="name" placeholder="Иван Иванов" required />
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    // Если вошел: подставляем имя (или логин) и блокируем поле
+                    var userName = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Name)?.Value ?? User.Identity.Name;
+                    <input type="text" id="name" value="@userName" readonly style="background-color: #f2f2f2; cursor: not-allowed; color: #666;" />
+                }
+                else
+                {
+                    // Если гость: обычный ввод
+                    <input type="text" id="name" placeholder="Иван Иванов" required />
+                }
             </div>
 
             <div class="form-group">
                 <label for="email">Email для связи</label>
-                <input type="email" id="email" placeholder="example@mail.com" required />
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    // Если вошел: берем email из Claims, делаем поле серым (readonly)
+                    var userEmail = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+                    <input type="email" id="email" value="@userEmail" readonly style="background-color: #f2f2f2; cursor: not-allowed; color: #666;" title="Используется ваш текущий Email" />
+                }
+                else
+                {
+                    // Если гость: просим ввести email
+                    <input type="email" id="email" placeholder="example@mail.com" required />
+                }
             </div>
 
             <div class="form-group">
@@ -230,7 +250,6 @@
             <p id="responseMsg"></p>
 
         </form>
-
     </section>
 
 </main>
