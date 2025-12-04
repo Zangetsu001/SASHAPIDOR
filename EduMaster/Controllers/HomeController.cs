@@ -48,77 +48,80 @@ namespace EduMaster.Controllers
         [HttpGet]
         public IActionResult Dashboard()
         {
-    
-
             var userName = User.Identity?.Name ?? "Гость";
-            var stored = HttpContext.Session.GetString("myCourses");
 
+            // 1. Читаем список ID курсов из сессии
+            var stored = HttpContext.Session.GetString("myCourses");
             List<Guid> ids = string.IsNullOrEmpty(stored)
                 ? new List<Guid>()
                 : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
 
-            ViewBag.MyCourses = _context.CourseDb
-                .Where(c => ids.Contains(c.Id))
-                .ToList();
-
-            ViewBag.AllCourses = _context.CourseDb
-                .Where(c => !ids.Contains(c.Id))
-                .ToList();
+            // 2. Загружаем сами курсы из базы по этим ID
+            if (ids != null && ids.Any())
+            {
+                ViewBag.MyCourses = _context.CourseDb
+                    .Where(c => ids.Contains(c.Id))
+                    .ToList();
+            }
+            else
+            {
+                ViewBag.MyCourses = new List<CourseDb>();
+            }
 
             return PartialView("_DashboardPartial", userName);
         }
 
 
         // ================= ЗАПИСАТЬСЯ =================
-
-        [Authorize]
+        [Authorize] // Запрещаем доступ неавторизованным
         [HttpPost]
         public IActionResult AddCourse(Guid id)
         {
+            // 1. Получаем текущий список из сессии
             var stored = HttpContext.Session.GetString("myCourses");
-
             List<Guid> ids = string.IsNullOrEmpty(stored)
                 ? new List<Guid>()
                 : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
 
+            // 2. Если курса еще нет — добавляем
             if (!ids.Contains(id))
+            {
                 ids.Add(id);
 
-            HttpContext.Session.SetString("myCourses",
-                System.Text.Json.JsonSerializer.Serialize(ids));
+                // 3. Сохраняем обновленный список обратно в сессию
+                HttpContext.Session.SetString("myCourses",
+                    System.Text.Json.JsonSerializer.Serialize(ids));
+            }
 
             return Json(new { success = true });
         }
-
-
-
-
         // ================= ОТПИСАТЬСЯ =================
         [Authorize]
         [HttpPost]
         public IActionResult RemoveCourse(Guid id)
         {
             var stored = HttpContext.Session.GetString("myCourses");
-
             List<Guid> ids = string.IsNullOrEmpty(stored)
                 ? new List<Guid>()
                 : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
 
             if (ids.Contains(id))
+            {
                 ids.Remove(id);
-
-            HttpContext.Session.SetString("myCourses",
-                System.Text.Json.JsonSerializer.Serialize(ids));
+                HttpContext.Session.SetString("myCourses",
+                    System.Text.Json.JsonSerializer.Serialize(ids));
+            }
 
             return Json(new { success = true });
         }
-
         // ================= ВЫХОД =================
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            // Очищаем корзину при выходе
+            HttpContext.Session.Remove("myCourses");
             return RedirectToAction("Index", "Home");
         }
 

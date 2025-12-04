@@ -1,4 +1,4 @@
-﻿
+﻿using EduMaster.DAL;
 using EduMaster.Domain.ModelsDb;
 using EduMaster.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -50,18 +50,14 @@ using (var scope = app.Services.CreateScope())
         var context = services.GetRequiredService<ApplicationDbContext>();
         var env = services.GetRequiredService<IWebHostEnvironment>();
 
-        // Гарантируем, что база создана (включая новые таблицы)
+        // Создаем базу заново
         context.Database.EnsureCreated();
 
-        // Вспомогательная функция для чтения картинки с диска
+        // Функция чтения файла
         byte[]? GetImageBytes(string filename)
         {
             var path = Path.Combine(env.WebRootPath, "img", filename);
-            if (File.Exists(path))
-            {
-                return File.ReadAllBytes(path);
-            }
-            return null;
+            return File.Exists(path) ? File.ReadAllBytes(path) : null;
         }
 
         // --- 1. КАТЕГОРИИ ---
@@ -79,7 +75,7 @@ using (var scope = app.Services.CreateScope())
             context.SaveChanges();
         }
 
-        // --- 2. КУРСЫ ---
+        // --- 2. КУРСЫ С ИНДИВИДУАЛЬНЫМИ КАРТИНКАМИ ---
         if (!context.CourseDb.Any())
         {
             // Получаем ID категорий
@@ -91,91 +87,105 @@ using (var scope = app.Services.CreateScope())
             var catPsychology = context.CategoryDb.FirstOrDefault(c => c.name == "Психология")?.Id ?? Guid.NewGuid();
             var catLanguages = context.CategoryDb.FirstOrDefault(c => c.name == "Иностранные языки")?.Id ?? Guid.NewGuid();
 
-            // Создаем список курсов
-            var courses = new List<CourseDb>
+            // === СПИСОК ВСЕХ КУРСОВ И ИХ КАРТИНОК ===
+            // В поле Img указывайте точное название файла из папки wwwroot/img
+            var coursesData = new[]
             {
-                // Программирование
-                new CourseDb { Id = Guid.NewGuid(), title = "Python-разработчик с нуля", description = "Изучите основы Python, работу с данными и создайте своего первого Telegram-бота.", price = 15000, is_active = true, created_at = DateTime.UtcNow, category_id = catProg },
-                new CourseDb { Id = Guid.NewGuid(), title = "C# и .NET для профи", description = "Глубокое погружение в платформу .NET, базы данных и архитектуру корпоративных приложений.", price = 25000, is_active = true, created_at = DateTime.UtcNow, category_id = catProg },
-                new CourseDb { Id = Guid.NewGuid(), title = "Java Enterprise", description = "Разработка серверных приложений на Java. Spring Framework, Hibernate и микросервисы.", price = 28000, is_active = true, created_at = DateTime.UtcNow, category_id = catProg },
-                new CourseDb { Id = Guid.NewGuid(), title = "Fullstack JavaScript", description = "Станьте универсальным разработчиком: React.js на фронтенде и Node.js на бэкенде.", price = 20000, is_active = true, created_at = DateTime.UtcNow, category_id = catProg },
-                new CourseDb { Id = Guid.NewGuid(), title = "DevOps инженер", description = "Автоматизация развертывания, Docker, Kubernetes и CI/CD процессы.", price = 32000, is_active = true, created_at = DateTime.UtcNow, category_id = catProg },
+                // === ПРОГРАММИРОВАНИЕ ===
+                new { CatId = catProg, Title = "Python-разработчик с нуля", Desc = "Изучите основы Python, работу с данными и создайте своего первого Telegram-бота.", Price = 15000m, Img = "python_start.jpg" },
+                new { CatId = catProg, Title = "C# и .NET для профи", Desc = "Глубокое погружение в платформу .NET, базы данных и архитектуру.", Price = 25000m, Img = "2.jpg" },
+                new { CatId = catProg, Title = "Java Enterprise", Desc = "Разработка серверных приложений на Java. Spring Framework, Hibernate.", Price = 28000m, Img = "3.jpg" },
+                new { CatId = catProg, Title = "Fullstack JavaScript", Desc = "React.js на фронтенде и Node.js на бэкенде.", Price = 20000m, Img = "4.jpg" },
+                new { CatId = catProg, Title = "DevOps инженер", Desc = "Docker, Kubernetes, CI/CD. Настройка серверов.", Price = 32000m, Img = "5.jpg" },
+                new { CatId = catProg, Title = "Алгоритмы и структуры данных", Desc = "Подготовка к собеседованиям в Big Tech компании.", Price = 10000m, Img = "6.jpg" },
 
-                // Дизайн
-                new CourseDb { Id = Guid.NewGuid(), title = "Веб-дизайн в Figma", description = "Создавайте современные и удобные интерфейсы сайтов. Основы композиции, типографики и цвета.", price = 12000, is_active = true, created_at = DateTime.UtcNow, category_id = catDesign },
-                new CourseDb { Id = Guid.NewGuid(), title = "Графический дизайн", description = "Работа в Adobe Photoshop и Illustrator. Создание логотипов и айдентики бренда.", price = 14000, is_active = true, created_at = DateTime.UtcNow, category_id = catDesign },
-                new CourseDb { Id = Guid.NewGuid(), title = "UX-исследования", description = "Как понять пользователя? Интервью, CJM, юзабилити-тестирование и аналитика.", price = 16000, is_active = true, created_at = DateTime.UtcNow, category_id = catDesign },
-                new CourseDb { Id = Guid.NewGuid(), title = "3D-моделирование в Blender", description = "Создание 3D персонажей и окружения. Текстурирование и рендер сцен.", price = 22000, is_active = true, created_at = DateTime.UtcNow, category_id = catDesign },
+                // === ДИЗАЙН ===
+                new { CatId = catDesign, Title = "Веб-дизайн в Figma", Desc = "Создавайте современные и удобные интерфейсы сайтов.", Price = 12000m, Img = "figma.jpg" },
+                new { CatId = catDesign, Title = "Графический дизайн", Desc = "Работа в Adobe Photoshop и Illustrator. Айдентика бренда.", Price = 14000m, Img = "graphic_design.jpg" },
+                new { CatId = catDesign, Title = "UX-исследования", Desc = "CJM, юзабилити-тестирование и аналитика.", Price = 16000m, Img = "ux_research.jpg" },
+                new { CatId = catDesign, Title = "3D-моделирование (Blender)", Desc = "Создание 3D персонажей и сцен.", Price = 22000m, Img = "blender.jpg" },
+                new { CatId = catDesign, Title = "Motion Design", Desc = "Анимация интерфейсов и рекламных роликов.", Price = 19000m, Img = "motion.jpg" },
 
-                // Мобильная разработка
-                new CourseDb { Id = Guid.NewGuid(), title = "Android на Kotlin", description = "Разработка нативных мобильных приложений. От Hello World до публикации в Google Play.", price = 22000, is_active = true, created_at = DateTime.UtcNow, category_id = catMobile },
-                new CourseDb { Id = Guid.NewGuid(), title = "iOS-разработчик (Swift)", description = "Создание приложений для iPhone и iPad. Изучение Swift и фреймворка SwiftUI.", price = 24000, is_active = true, created_at = DateTime.UtcNow, category_id = catMobile },
-                new CourseDb { Id = Guid.NewGuid(), title = "Flutter: Кроссплатформа", description = "Пишем одно приложение, которое работает и на Android, и на iOS. Язык Dart.", price = 20000, is_active = true, created_at = DateTime.UtcNow, category_id = catMobile },
+                // === МОБИЛЬНАЯ РАЗРАБОТКА ===
+                new { CatId = catMobile, Title = "Android на Kotlin", Desc = "Нативная разработка. От макета до Google Play.", Price = 22000m, Img = "android.jpg" },
+                new { CatId = catMobile, Title = "iOS-разработчик (Swift)", Desc = "Создание приложений для iPhone и iPad.", Price = 24000m, Img = "ios.jpg" },
+                new { CatId = catMobile, Title = "Flutter: Кроссплатформа", Desc = "Одно приложение для iOS и Android на языке Dart.", Price = 20000m, Img = "flutter.jpg" },
+                new { CatId = catMobile, Title = "React Native", Desc = "Мобильная разработка на JavaScript.", Price = 18000m, Img = "react_native.jpg" },
 
-                // Маркетинг
-                new CourseDb { Id = Guid.NewGuid(), title = "SMM-менеджер", description = "Продвижение брендов в социальных сетях. Таргетинг, контент-план и аналитика.", price = 18000, is_active = true, created_at = DateTime.UtcNow, category_id = catMarketing },
-                new CourseDb { Id = Guid.NewGuid(), title = "Интернет-маркетолог", description = "Комплексное продвижение бизнеса в интернете. SEO, контекстная реклама и email-маркетинг.", price = 20000, is_active = true, created_at = DateTime.UtcNow, category_id = catMarketing },
-                new CourseDb { Id = Guid.NewGuid(), title = "Управление проектами (PM)", description = "Agile, Scrum, Kanban. Как управлять командой и доводить проекты до релиза.", price = 25000, is_active = true, created_at = DateTime.UtcNow, category_id = catMarketing },
+                // === МАРКЕТИНГ ===
+                new { CatId = catMarketing, Title = "SMM-менеджер", Desc = "Продвижение в соцсетях. Контент-план и таргетинг.", Price = 18000m, Img = "smm.jpg" },
+                new { CatId = catMarketing, Title = "Интернет-маркетолог", Desc = "SEO, контекстная реклама и аналитика.", Price = 20000m, Img = "marketing.jpg" },
+                new { CatId = catMarketing, Title = "Project Manager (PM)", Desc = "Управление IT-проектами. Agile, Scrum.", Price = 25000m, Img = "pm.jpg" },
+                new { CatId = catMarketing, Title = "Финансовая грамотность", Desc = "Личный бюджет и инвестиции для начинающих.", Price = 8000m, Img = "finance.jpg" },
+                new { CatId = catMarketing, Title = "Запуск стартапа", Desc = "От идеи до первого инвестора.", Price = 30000m, Img = "startup.jpg" },
 
-                // Кибербезопасность
-                new CourseDb { Id = Guid.NewGuid(), title = "Белый хакер (Pentest)", description = "Основы тестирования на проникновение и защиты веб-ресурсов от атак.", price = 30000, is_active = true, created_at = DateTime.UtcNow, category_id = catSecurity },
-                new CourseDb { Id = Guid.NewGuid(), title = "Сетевая безопасность", description = "Настройка Firewalls, VPN, защита корпоративных сетей и протоколы шифрования.", price = 28000, is_active = true, created_at = DateTime.UtcNow, category_id = catSecurity },
+                // === КИБЕРБЕЗОПАСНОСТЬ ===
+                new { CatId = catSecurity, Title = "Белый хакер (Pentest)", Desc = "Поиск уязвимостей и защита веб-ресурсов.", Price = 30000m, Img = "hacker.jpg" },
+                new { CatId = catSecurity, Title = "Сетевая безопасность", Desc = "Firewalls, VPN, защита корпоративных сетей.", Price = 28000m, Img = "network_sec.jpg" },
+                new { CatId = catSecurity, Title = "Криптография", Desc = "Блокчейн, цифровые подписи и шифрование.", Price = 25000m, Img = "crypto.jpg" },
+                new { CatId = catSecurity, Title = "Анализ вирусов", Desc = "Реверс-инжиниринг вредоносного ПО.", Price = 35000m, Img = "virus_analysis.jpg" },
 
-                // Психология
-                new CourseDb { Id = Guid.NewGuid(), title = "Психология общения", description = "Как выстраивать эффективные коммуникации, разрешать конфликты и понимать собеседника.", price = 9000, is_active = true, created_at = DateTime.UtcNow, category_id = catPsychology },
-                new CourseDb { Id = Guid.NewGuid(), title = "Когнитивная психология", description = "Как работает наш мозг: память, внимание и принятие решений.", price = 11000, is_active = true, created_at = DateTime.UtcNow, category_id = catPsychology },
+                // === ПСИХОЛОГИЯ ===
+                new { CatId = catPsychology, Title = "Психология общения", Desc = "Эффективные коммуникации и разрешение конфликтов.", Price = 9000m, Img = "psycho_comm.jpg" },
+                new { CatId = catPsychology, Title = "Когнитивная психология", Desc = "Память, внимание, принятие решений.", Price = 11000m, Img = "cognitive.jpg" },
+                new { CatId = catPsychology, Title = "Эмоциональный интеллект", Desc = "Управление эмоциями и развитие эмпатии.", Price = 10000m, Img = "eq.jpg" },
+                new { CatId = catPsychology, Title = "Борьба со стрессом", Desc = "Техники релаксации и профилактика выгорания.", Price = 7000m, Img = "stress.jpg" },
 
-                // Языки
-                new CourseDb { Id = Guid.NewGuid(), title = "Английский для IT", description = "Специализированный курс: техническая документация и общение с заказчиками.", price = 11000, is_active = true, created_at = DateTime.UtcNow, category_id = catLanguages },
-                new CourseDb { Id = Guid.NewGuid(), title = "Разговорный английский", description = "Преодоление языкового барьера. Интенсивная практика с носителями.", price = 15000, is_active = true, created_at = DateTime.UtcNow, category_id = catLanguages }
+                // === ЯЗЫКИ ===
+                new { CatId = catLanguages, Title = "Английский для IT", Desc = "Техническая документация и собеседования.", Price = 11000m, Img = "english_it.jpg" },
+                new { CatId = catLanguages, Title = "Разговорный английский", Desc = "Практика речи с носителями.", Price = 15000m, Img = "english_speak.jpg" },
+                new { CatId = catLanguages, Title = "Немецкий: Уровень A1", Desc = "Базовый курс для путешествий.", Price = 12000m, Img = "german.jpg" },
+                new { CatId = catLanguages, Title = "Китайский для бизнеса", Desc = "Деловой этикет и переговоры.", Price = 18000m, Img = "chinese.jpg" }
             };
 
-            context.CourseDb.AddRange(courses);
-            context.SaveChanges(); // Сохраняем, чтобы у курсов появились ID
-
-            // --- 3. ЗАГРУЖАЕМ КАРТИНКИ В БАЗУ ---
-            // Берем ваши картинки из папки wwwroot/img
-            string[] imageFiles = { "course1.jpg", "course2.jpg", "course3.jpg", "course4.jpg" };
-            int imgIndex = 0;
-            var imagesToAdd = new List<CourseImageDb>();
-
-            foreach (var course in courses)
+            // Перебираем данные и сохраняем в БД
+            foreach (var item in coursesData)
             {
-                // Берем картинку по кругу (1, 2, 3, 4, 1, 2...)
-                string fileName = imageFiles[imgIndex % imageFiles.Length];
+                // 1. Создаем курс
+                var newCourse = new CourseDb
+                {
+                    Id = Guid.NewGuid(),
+                    title = item.Title,
+                    description = item.Desc,
+                    price = item.Price,
+                    is_active = true,
+                    created_at = DateTime.UtcNow,
+                    category_id = item.CatId
+                };
+                context.CourseDb.Add(newCourse);
 
-                // Читаем байты с диска
-                byte[]? imgBytes = GetImageBytes(fileName);
+                // 2. Ищем картинку на диске
+                byte[]? imgBytes = GetImageBytes(item.Img);
+
+                // Если вашей картинки нет, можно раскомментировать строку ниже, 
+                // чтобы поставить заглушку (например, course1.jpg), если хотите:
+                // if (imgBytes == null) imgBytes = GetImageBytes("course1.jpg");
 
                 if (imgBytes != null)
                 {
-                    imagesToAdd.Add(new CourseImageDb
+                    var newImage = new CourseImageDb
                     {
                         Id = Guid.NewGuid(),
-                        CourseId = course.Id,
+                        CourseId = newCourse.Id,
                         Data = imgBytes,
                         ContentType = "image/jpeg"
-                    });
+                    };
+                    context.CourseImageDb.Add(newImage);
                 }
-                imgIndex++;
             }
 
-            if (imagesToAdd.Any())
-            {
-                context.CourseImageDb.AddRange(imagesToAdd);
-                context.SaveChanges();
-            }
+            context.SaveChanges();
         }
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ошибка при автоматическом заполнении базы данных.");
+        logger.LogError(ex, "Ошибка при автозаполнении БД.");
     }
 }
 
 // ==========================================
-// 3. MIDDLEWARE PIPELINE
+// 3. ЗАПУСК
 // ==========================================
 
 if (!app.Environment.IsDevelopment())

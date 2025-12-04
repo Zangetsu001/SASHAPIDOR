@@ -1,95 +1,114 @@
 ﻿@model string
+@using EduMaster.Domain.ModelsDb
 
-<div class="container-fluid py-3">
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-        <h2 class="m-0">Личный кабинет: <span class="text-primary">@Model</span></h2>
+<div class="dashboard-wrapper">
+
+    <!-- Шапка -->
+    <div class="dashboard-header">
+        <h2>Личный кабинет</h2>
+        <div class="user-badge">
+            <i class="fa fa-user-circle"></i>
+            <span>@Model</span>
+        </div>
     </div>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active fw-bold" id="my-courses-tab" data-bs-toggle="tab" data-bs-target="#my-courses" type="button" role="tab">
-                <i class="fa fa-book-open me-2"></i>Мои Курсы
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link fw-bold" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
-                <i class="fa fa-cog me-2"></i>Настройки
-            </button>
-        </li>
-    </ul>
+    <!-- Меню вкладок -->
+    <div class="custom-nav-tabs">
+        <button class="nav-link-custom active" onclick="openTab(event, 'tab-courses')">Мои курсы</button>
+        <button class="nav-link-custom" onclick="openTab(event, 'tab-settings')">Настройки</button>
+    </div>
 
-    <div class="tab-content mt-4" id="myTabContent">
-        <div class="tab-pane fade show active" id="my-courses" role="tabpanel">
-            @if (ViewBag.MyCourses != null && ((List<EduMaster.Domain.ModelsDb.CourseDb>)ViewBag.MyCourses).Any())
-            {
-                <div class="row">
-                    @foreach (var course in (List<EduMaster.Domain.ModelsDb.CourseDb>)ViewBag.MyCourses)
-                    {
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card h-100 shadow-sm border-0" style="transition:0.3s; overflow:hidden;">
-                                <div class="card-header bg-success text-white fw-bold d-flex justify-content-between align-items-center">
-                                    <span><i class="fa fa-check-circle me-1"></i> Вы записаны</span>
-                                </div>
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title fw-bold">@course.title</h5>
-                                    <p class="card-text text-muted flex-grow-1" style="font-size:0.9rem;">@course.description</p>
+    <!-- Контент: МОИ КУРСЫ -->
+    <div id="tab-courses" class="tab-content-item" style="display:block;">
 
-                                    <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
-                                        <span class="fw-bold text-primary fs-5">@course.price.ToString("N0") ₽</span>
+        @if (ViewBag.MyCourses != null && ((List<CourseDb>)ViewBag.MyCourses).Any())
+        {
+            <div class="cabinet-courses-grid">
+                @foreach (var course in (List<CourseDb>)ViewBag.MyCourses)
+                {
+                    <div class="cabinet-course-card">
+                        <div class="cabinet-img-wrapper">
+                            <div class="status-badge">Вы записаны</div>
+                            <!-- Грузим картинку -->
+                            <img src="@Url.Action("GetImage", "Courses", new { courseId = course.Id })"
+                                 alt="@course.title"
+                                 class="cabinet-img"
+                                 onerror="this.style.display='none';" />
+                            <!-- Заглушка под картинкой -->
+                            <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:#eee; z-index:-1;"></div>
+                        </div>
 
-                                        <button class="btn btn-outline-danger btn-sm btn-remove-course" data-id="@course.Id">
-                                            <i class="fa fa-trash-alt me-1"></i> Отписаться
-                                        </button>
-                                    </div>
-                                </div>
+                        <div class="cabinet-card-body">
+                            <h4 class="cabinet-card-title">@course.title</h4>
+                            <p class="cabinet-card-desc">@course.description</p>
+
+                            <div class="cabinet-card-footer">
+                                <span class="price-tag">@course.price.ToString("N0") ₽</span>
+                                <button class="btn-remove" onclick="removeCourse('@course.Id', this)">
+                                    <i class="fa fa-times"></i> Отказаться
+                                </button>
                             </div>
                         </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <div class="text-center py-5 bg-white rounded shadow-sm">
-                    <i class="fa fa-folder-open fa-3x text-muted mb-3"></i>
-                    <h4>У вас пока нет активных курсов</h4>
-                    <p class="text-muted">Перейдите в каталог, чтобы выбрать подходящее обучение.</p>
-                    <a href="/Courses/Catalog" class="btn btn-primary mt-2">Перейти в каталог</a>
-                </div>
-            }
-        </div>
-
-        <div class="tab-pane fade" id="settings" role="tabpanel">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5>Личные данные</h5>
-                    <p class="text-muted">Функционал смены пароля и редактирования профиля в разработке.</p>
-                </div>
+                    </div>
+                }
             </div>
+        }
+        else
+        {
+            <div class="empty-cabinet">
+                <i class="fa fa-graduation-cap"></i>
+                <h4>Список курсов пуст</h4>
+                <p>Перейдите в каталог и выберите что-нибудь интересное.</p>
+                <a href="/Courses/Catalog" class="btn-go-catalog">В каталог</a>
+            </div>
+        }
+    </div>
+
+    <!-- Контент: НАСТРОЙКИ -->
+    <div id="tab-settings" class="tab-content-item" style="display:none;">
+        <div class="settings-box">
+            <div class="settings-avatar"><i class="fa fa-user"></i></div>
+            <h4>@Model</h4>
+            <p class="text-muted">Профиль активен</p>
         </div>
     </div>
+
 </div>
 
 <script>
-    // Логика кнопки "Отписаться"
-    // Мы используем делегирование событий или прямой биндинг, так как это PartialView
-    $('.btn-remove-course').click(function() {
-        var btn = $(this);
-        var id = btn.data('id');
+    // Переключение вкладок (без jQuery и Bootstrap JS, чтобы не конфликтовало)
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
 
-        if(!confirm('Вы уверены, что хотите отказаться от этого курса?')) return;
+        // Скрываем все вкладки
+        tabcontent = document.getElementsByClassName("tab-content-item");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
 
-        // Блокируем кнопку
-        btn.prop('disabled', true);
-        btn.html('<i class="fa fa-spinner fa-spin"></i>');
+        // Убираем класс active у кнопок
+        tablinks = document.getElementsByClassName("nav-link-custom");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
 
-        $.post('/Home/RemoveCourse', { id: id }, function(res) {
-            if(res.success) {
-                // Перезагружаем страницу, чтобы обновить список
-                location.reload();
-            } else {
-                alert('Ошибка при удалении');
-                btn.prop('disabled', false).text('Отписаться');
-            }
-        });
-    });
+        // Показываем текущую
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Удаление курса
+    function removeCourse(id, btn) {
+        if(!confirm("Удалить курс из списка?")) return;
+
+        btn.disabled = true;
+        btn.innerHTML = "...";
+
+        fetch('/Home/RemoveCourse?id=' + id, { method: 'POST' })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) location.reload();
+                else alert("Ошибка удаления");
+            });
+    }
 </script>

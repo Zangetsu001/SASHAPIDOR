@@ -17,7 +17,7 @@ namespace EduMaster.Domain.ModelsDb
         [ForeignKey("CourseId")]
         public virtual CourseDb? Course { get; set; }
 
-        // === ПОЛЯ ДЛЯ ХРАНЕНИЯ ФАЙЛА ===
+        // === ВАЖНО: Поля для хранения картинки в БД ===
         [Column("data")]
         public byte[]? Data { get; set; }
 

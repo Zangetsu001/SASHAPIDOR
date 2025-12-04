@@ -13,7 +13,6 @@
     </div>
 
     <div class="courses-layout">
-        <!-- Sidebar -->
         <aside class="courses-sidebar">
             <div class="filter-card">
                 <h3>Категории</h3>
@@ -31,7 +30,6 @@
             </div>
         </aside>
 
-        <!-- Content -->
         <div class="courses-content">
             <form method="get" asp-action="Catalog" class="search-form mb-4">
                 <input type="text" name="search" value="@Model.Search" placeholder="Поиск курса..." />
@@ -68,14 +66,13 @@
                     {
                         <div class="course-card">
 
-                            <!-- КАРТИНКА ГРУЗИТСЯ ИЗ БАЗЫ ДАННЫХ -->
+                            <!-- ЗАПРОС КАРТИНКИ -->
                             <div class="course-img-wrapper">
                                 <img src="@Url.Action("GetImage", "Courses", new { courseId = course.Id })"
                                      alt="@course.title"
                                      class="course-img"
                                      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
 
-                                <!-- ЗАГЛУШКА (Если картинки нет в базе) -->
                                 <div class="course-placeholder" style="display:none;">
                                     <i class="fa fa-graduation-cap"></i>
                                 </div>
@@ -90,7 +87,7 @@
                                         <button class="btn-details" data-id="@course.Id">Инфо</button>
                                         @if (User.Identity.IsAuthenticated)
                                         {
-                                            <button class="btn-enroll" data-id="@course.Id">В корзину</button>
+                                            <button class="btn-enroll" data-id="@course.Id">Записаться</button>
                                         }
                                         else
                                         {
@@ -125,5 +122,5 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/courses_script.js" asp-append-version="true"></script>
+    <script src="~/js/courses.js" asp-append-version="true"></script>
 }
