@@ -1,4 +1,4 @@
-
+п»їusing EduMaster.DAL;
 using EduMaster.Domain.ModelsDb;
 using EduMaster.Services;
 using Google.Apis.Auth;
@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,43 +21,54 @@ namespace EduMaster.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ICourseService _courseService;
-        private readonly ApplicationDbContext _context; // Нам нужен контекст, чтобы искать пользователя
-        private readonly IEmailService _emailService; // Добавили
+        private readonly ApplicationDbContext _context;
+        private readonly IEmailService _emailService;
         private readonly IMemoryCache _cache;
+        private readonly IConfiguration _configuration; // Р”Р»СЏ РґРѕСЃС‚СѓРїР° Рє РЅР°СЃС‚СЂРѕР№РєР°Рј (РїРѕС‡С‚Рµ Р°РґРјРёРЅР°)
 
-        public HomeController(IAuthService authService, ICourseService courseService, ApplicationDbContext context, IEmailService emailService, IMemoryCache cache)
+        public HomeController(
+            IAuthService authService,
+            ICourseService courseService,
+            ApplicationDbContext context,
+            IEmailService emailService,
+            IMemoryCache cache,
+            IConfiguration configuration)
         {
             _authService = authService;
             _courseService = courseService;
             _context = context;
             _emailService = emailService;
             _cache = cache;
+            _configuration = configuration;
         }
 
-        // ================= ГЛАВНАЯ =================
-
+        // ================= Р“Р›РђР’РќРђРЇ РЎРўР РђРќРР¦Рђ =================
         public async Task<IActionResult> Index()
         {
+            // 1. Р—Р°РіСЂСѓР¶Р°РµРј Р°РєС‚РёРІРЅС‹Рµ РєСѓСЂСЃС‹
             var courses = await _courseService.GetActiveCoursesAsync();
             ViewBag.AllCourses = courses;
+
+            // 2. Р—Р°РіСЂСѓР¶Р°РµРј РєР°С‚РµРіРѕСЂРёРё РґР»СЏ РєР°СЂС‚РѕС‡РµРє РЅР° РіР»Р°РІРЅРѕР№
+            ViewBag.Categories = await _context.CategoryDb.OrderBy(c => c.name).ToListAsync();
+
             return View();
         }
 
-        // ================= DASHBOARD =================
-
+        // ================= Р›РР§РќР«Р™ РљРђР‘РРќР•Рў (DASHBOARD) =================
         [Authorize]
         [HttpGet]
         public IActionResult Dashboard()
         {
-            var userName = User.Identity?.Name ?? "Гость";
+            var userName = User.Identity?.Name ?? "Р“РѕСЃС‚СЊ";
 
-            // 1. Читаем список ID курсов из сессии
+            // 1. РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє ID РєСѓСЂСЃРѕРІ РёР· РЎРµСЃСЃРёРё
             var stored = HttpContext.Session.GetString("myCourses");
             List<Guid> ids = string.IsNullOrEmpty(stored)
                 ? new List<Guid>()
                 : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
 
-            // 2. Загружаем сами курсы из базы по этим ID
+            // 2. Р—Р°РіСЂСѓР¶Р°РµРј РїРѕР»РЅС‹Рµ РґР°РЅРЅС‹Рµ РєСѓСЂСЃРѕРІ РёР· Р‘Р” РїРѕ СЌС‚РёРј ID
             if (ids != null && ids.Any())
             {
                 ViewBag.MyCourses = _context.CourseDb
@@ -71,31 +83,26 @@ namespace EduMaster.Controllers
             return PartialView("_DashboardPartial", userName);
         }
 
-
-        // ================= ЗАПИСАТЬСЯ =================
-        [Authorize] // Запрещаем доступ неавторизованным
+        // ================= Р—РђРџРРЎРђРўР¬РЎРЇ РќРђ РљРЈР РЎ =================
+        [Authorize]
         [HttpPost]
         public IActionResult AddCourse(Guid id)
         {
-            // 1. Получаем текущий список из сессии
             var stored = HttpContext.Session.GetString("myCourses");
             List<Guid> ids = string.IsNullOrEmpty(stored)
                 ? new List<Guid>()
                 : System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(stored);
 
-            // 2. Если курса еще нет — добавляем
             if (!ids.Contains(id))
             {
                 ids.Add(id);
-
-                // 3. Сохраняем обновленный список обратно в сессию
-                HttpContext.Session.SetString("myCourses",
-                    System.Text.Json.JsonSerializer.Serialize(ids));
+                HttpContext.Session.SetString("myCourses", System.Text.Json.JsonSerializer.Serialize(ids));
             }
 
             return Json(new { success = true });
         }
-        // ================= ОТПИСАТЬСЯ =================
+
+        // ================= РћРўРџРРЎРђРўР¬РЎРЇ РћРў РљРЈР РЎРђ =================
         [Authorize]
         [HttpPost]
         public IActionResult RemoveCourse(Guid id)
@@ -108,61 +115,149 @@ namespace EduMaster.Controllers
             if (ids.Contains(id))
             {
                 ids.Remove(id);
-                HttpContext.Session.SetString("myCourses",
-                    System.Text.Json.JsonSerializer.Serialize(ids));
+                HttpContext.Session.SetString("myCourses", System.Text.Json.JsonSerializer.Serialize(ids));
             }
 
             return Json(new { success = true });
         }
-        // ================= ВЫХОД =================
 
+        // ================= РћРўРџР РђР’РљРђ РЎРћРћР‘Р©Р•РќРРЇ (РћР‘Р РђРўРќРђРЇ РЎР’РЇР—Р¬) =================
         [HttpPost]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> SendMessage([FromBody] MessageViewModel model)
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            // Очищаем корзину при выходе
-            HttpContext.Session.Remove("myCourses");
-            return RedirectToAction("Index", "Home");
+            if (string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Message))
+            {
+                return Json(new { success = false, message = "РџРѕР¶Р°Р»СѓР№СЃС‚Р°, Р·Р°РїРѕР»РЅРёС‚Рµ РІСЃРµ РїРѕР»СЏ." });
+            }
+
+            try
+            {
+                // Р‘РµСЂРµРј РїРѕС‡С‚Сѓ, СЃ РєРѕС‚РѕСЂРѕР№ РѕС‚РїСЂР°РІР»СЏРµРј (РѕРЅР° Р¶Рµ РїРѕС‡С‚Р° Р°РґРјРёРЅР°), РёР· appsettings.json
+                string adminEmail = _configuration["SMTP:User"];
+
+                string body = $@"
+                    <div style='font-family: Arial; padding: 20px; border: 1px solid #eee;'>
+                        <h2 style='color: #0066cc;'>рџ“© РќРѕРІРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ СЃ СЃР°Р№С‚Р°</h2>
+                        <p><b>РћС‚ РєРѕРіРѕ:</b> {model.Name} (<a href='mailto:{model.Email}'>{model.Email}</a>)</p>
+                        <p><b>РўРµРјР°:</b> {model.Subject ?? "Р‘РµР· С‚РµРјС‹"}</p>
+                        <hr>
+                        <p><b>РЎРѕРѕР±С‰РµРЅРёРµ:</b></p>
+                        <p style='background: #f9f9f9; padding: 15px; border-radius: 5px;'>{model.Message}</p>
+                    </div>";
+
+                await _emailService.SendEmailAsync(adminEmail, $"EduMaster: {model.Subject ?? "РћР±СЂР°С‚РЅР°СЏ СЃРІСЏР·СЊ"}", body);
+
+                return Json(new { success = true, message = "РЎРѕРѕР±С‰РµРЅРёРµ РѕС‚РїСЂР°РІР»РµРЅРѕ! РњС‹ СЃРІСЏР¶РµРјСЃСЏ СЃ РІР°РјРё." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "РћС€РёР±РєР° РѕС‚РїСЂР°РІРєРё: " + ex.Message });
+            }
         }
 
-        // ================= ВХОД ЧЕРЕЗ GOOGLE (ИСПРАВЛЕННЫЙ) =================
+        // ================= Р Р•Р“РРЎРўР РђР¦РРЇ (РЁРђР“ 1: РћРўРџР РђР’РљРђ РљРћР”Рђ) =================
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Login) ||
+                string.IsNullOrWhiteSpace(model.Password) || model.Password != model.PasswordConfirm)
+            {
+                return Json(new { isSuccess = false, errors = new[] { "РџСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РґР°РЅРЅС‹С…." } });
+            }
 
+            var userExists = await _context.UserDb.AnyAsync(u => u.Email == model.Email || u.Login == model.Login);
+            if (userExists) return Json(new { isSuccess = false, errors = new[] { "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј Email РёР»Рё Р›РѕРіРёРЅРѕРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚." } });
+
+            // Р“РµРЅРµСЂРёСЂСѓРµРј РєРѕРґ
+            var code = new Random().Next(1000, 9999).ToString();
+
+            // РЎРѕС…СЂР°РЅСЏРµРј РІ РєСЌС€ РЅР° 10 РјРёРЅСѓС‚
+            _cache.Set(model.Email, new RegistrationCacheModel
+            {
+                Login = model.Login,
+                Password = model.Password,
+                Code = code
+            }, TimeSpan.FromMinutes(10));
+
+            try
+            {
+                var emailBody = GetHtmlEmailTemplate(model.Login, code);
+                await _emailService.SendEmailAsync(model.Email, "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СЂРµРіРёСЃС‚СЂР°С†РёРё EduMaster", emailBody);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isSuccess = false, errors = new[] { "РћС€РёР±РєР° РѕС‚РїСЂР°РІРєРё РїРёСЃСЊРјР°: " + ex.Message } });
+            }
+
+            return Json(new { isSuccess = true, requireCode = true, email = model.Email });
+        }
+
+        // ================= Р Р•Р“РРЎРўР РђР¦РРЇ (РЁРђР“ 2: РџР РћР’Р•Р РљРђ РљРћР”Рђ) =================
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> ConfirmRegistration([FromBody] ConfirmViewModel model)
+        {
+            if (!_cache.TryGetValue(model.Email, out RegistrationCacheModel cachedUser))
+            {
+                return Json(new { isSuccess = false, message = "РљРѕРґ РёСЃС‚РµРє РёР»Рё email РЅРµРІРµСЂРµРЅ." });
+            }
+
+            if (cachedUser.Code != model.Code)
+            {
+                return Json(new { isSuccess = false, message = "РќРµРІРµСЂРЅС‹Р№ РєРѕРґ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ." });
+            }
+
+            var result = await _authService.RegisterAsync(model.Email, cachedUser.Login, cachedUser.Password);
+
+            if (!result) return Json(new { isSuccess = false, message = "РћС€РёР±РєР° РїСЂРё СЃРѕР·РґР°РЅРёРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ Р‘Р”." });
+
+            _cache.Remove(model.Email);
+            return Json(new { isSuccess = true });
+        }
+
+        // ================= Р’РҐРћР” =================
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.LoginOrEmail) || string.IsNullOrWhiteSpace(model.Password))
+                return Json(new { isSuccess = false, errors = new[] { "Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ Рё РїР°СЂРѕР»СЊ" } });
+
+            var result = await _authService.LoginAsync(model.LoginOrEmail, model.Password);
+
+            if (!result)
+                return Json(new { isSuccess = false, errors = new[] { "РќРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ" } });
+
+            return Json(new { isSuccess = true });
+        }
+
+        // ================= Р’РҐРћР” Р§Р•Р Р•Р— GOOGLE =================
         [HttpPost]
         public async Task<IActionResult> GoogleLogin(string credential)
         {
             try
             {
-                // 1. Настройки валидации (ВАЖНО: ВСТАВЬТЕ СВОЙ CLIENT ID!)
                 var settings = new GoogleJsonWebSignature.ValidationSettings()
                 {
                     Audience = new List<string>() { "658972345156-chmbutbtvpqmeflh5jq3hmge1omvqtlt.apps.googleusercontent.com" }
                 };
 
                 var payload = await GoogleJsonWebSignature.ValidateAsync(credential, settings);
-
-                // 2. Ищем пользователя в базе по Email
                 var user = await _context.UserDb.FirstOrDefaultAsync(u => u.Email == payload.Email);
 
                 if (user == null)
                 {
-                    // 3. Если пользователя нет — используем ваш сервис регистрации!
-                    // Генерируем случайный пароль, так как он не нужен при входе через Google
                     var randomPassword = Guid.NewGuid().ToString();
                     var login = payload.Name ?? payload.GivenName ?? "GoogleUser";
 
-                    // Используем _authService, который сам захэширует пароль как надо
                     bool registerResult = await _authService.RegisterAsync(payload.Email, login, randomPassword);
 
-                    if (!registerResult)
-                    {
-                        return Json(new { success = false, message = "Не удалось создать пользователя (возможно, логин занят)." });
-                    }
+                    if (!registerResult) return Json(new { success = false, message = "РќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕР·РґР°С‚СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ." });
 
-                    // Получаем созданного пользователя, чтобы взять его данные (Role и т.д.)
                     user = await _context.UserDb.FirstOrDefaultAsync(u => u.Email == payload.Email);
                 }
 
-                // 4. Входим в систему (создаем куки)
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Login),
@@ -171,96 +266,41 @@ namespace EduMaster.Controllers
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties { IsPersistent = true };
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), new AuthenticationProperties { IsPersistent = true });
 
                 return Json(new { success = true });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Ошибка Google: " + ex.Message });
+                return Json(new { success = false, message = "РћС€РёР±РєР° Google: " + ex.Message });
             }
         }
 
-        // ================= РЕГИСТРАЦИЯ =================
-
+        // ================= Р’Р«РҐРћР” =================
         [HttpPost]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        public async Task<IActionResult> Logout()
         {
-            var errors = new List<string>();
-            if (string.IsNullOrWhiteSpace(model.Email)) errors.Add("Email обязателен");
-            if (string.IsNullOrWhiteSpace(model.Login)) errors.Add("Логин обязателен");
-            if (string.IsNullOrWhiteSpace(model.Password)) errors.Add("Пароль обязателен");
-            if (model.Password != model.PasswordConfirm) errors.Add("Пароли не совпадают");
-
-            // Проверяем, есть ли уже такой юзер в БД
-            var userExists = await _context.UserDb.AnyAsync(u => u.Email == model.Email || u.Login == model.Login);
-            if (userExists) errors.Add("Пользователь с таким Email или Логином уже существует");
-
-            if (errors.Any()) return Json(new { isSuccess = false, errors });
-
-            // Генерируем код (4 цифры)
-            var code = new Random().Next(1000, 9999).ToString();
-
-            // Сохраняем данные пользователя и код в Кэш на 10 минут
-            // Ключ кэша - это Email пользователя
-            _cache.Set(model.Email, new RegistrationCacheModel
-            {
-                Login = model.Login,
-                Password = model.Password,
-                Code = code
-            }, TimeSpan.FromMinutes(10));
-
-            // Отправляем письмо
-            try
-            {
-                var emailBody = GetHtmlEmailTemplate(model.Login, code);
-
-                await _emailService.SendEmailAsync(model.Email, "Подтверждение регистрации EduMaster", emailBody);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { isSuccess = false, errors = new[] { "Ошибка отправки письма: " + ex.Message } });
-            }
-
-            // Возвращаем успех и говорим фронтенду показать окно ввода кода
-            return Json(new { isSuccess = true, requireCode = true, email = model.Email });
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("myCourses"); // РћС‡РёС‰Р°РµРј СЃРµСЃСЃРёСЋ
+            return RedirectToAction("Index", "Home");
         }
 
-        // ================= РЕГИСТРАЦИЯ (ШАГ 2: ПРОВЕРКА КОДА) =================
-        [HttpPost]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> ConfirmRegistration([FromBody] ConfirmViewModel model)
+        // ================= Р’РЎРџРћРњРћР“РђРўР•Р›Р¬РќР«Р• РњР•РўРћР”Р« Р VIEW =================
+
+        private string GetHtmlEmailTemplate(string login, string code)
         {
-            // Пытаемся достать данные из кэша по Email
-            if (!_cache.TryGetValue(model.Email, out RegistrationCacheModel cachedUser))
-            {
-                return Json(new { isSuccess = false, message = "Время действия кода истекло или email неверный. Попробуйте снова." });
-            }
-
-            if (cachedUser.Code != model.Code)
-            {
-                return Json(new { isSuccess = false, message = "Неверный код подтверждения." });
-            }
-
-            // Если код верный - регистрируем реально
-            var result = await _authService.RegisterAsync(model.Email, cachedUser.Login, cachedUser.Password);
-
-            if (!result)
-                return Json(new { isSuccess = false, message = "Ошибка при создании пользователя в БД." });
-
-            // Удаляем из кэша
-            _cache.Remove(model.Email);
-
-            return Json(new { isSuccess = true });
+            return $@"
+            <div style='font-family: Helvetica, Arial, sans-serif; padding: 20px;'>
+                <div style='border-bottom: 1px solid #eee; padding-bottom: 10px;'>
+                    <h2 style='color: #00466a;'>EduMaster</h2>
+                </div>
+                <p>Р—РґСЂР°РІСЃС‚РІСѓР№С‚Рµ, <b>{login}</b>!</p>
+                <p>Р’Р°С€ РєРѕРґ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ:</p>
+                <h2 style='background: #00466a; color: #fff; padding: 10px 20px; display: inline-block; border-radius: 5px;'>{code}</h2>
+                <p style='color: #888; font-size: 0.9em;'>РљРѕРґ РґРµР№СЃС‚РІРёС‚РµР»РµРЅ 10 РјРёРЅСѓС‚.</p>
+            </div>";
         }
 
-        // Вспомогательный класс для кэша (можно добавить внизу файла)
         private class RegistrationCacheModel
         {
             public string Login { get; set; }
@@ -268,85 +308,41 @@ namespace EduMaster.Controllers
             public string Code { get; set; }
         }
 
-
-
-
-        // ================= ВХОД =================
-
-        [HttpPost]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
-        {
-            if (string.IsNullOrWhiteSpace(model.LoginOrEmail) || string.IsNullOrWhiteSpace(model.Password))
-                return Json(new { isSuccess = false, errors = new[] { "Введите логин и пароль" } });
-
-            var result = await _authService.LoginAsync(model.LoginOrEmail, model.Password);
-
-            if (!result)
-                return Json(new { isSuccess = false, errors = new[] { "Неверный логин или пароль" } });
-
-            return Json(new { isSuccess = true });
-        }
-
-        // ================= ПРОСТЫЕ VIEW =================
-
         public IActionResult AboutUs() => View();
         public IActionResult Services() => View();
         public IActionResult Contacts() => View();
         public IActionResult SiteInformation() => View();
         public IActionResult Privacy() => View();
         public IActionResult Error() => View();
-        private string GetHtmlEmailTemplate(string login, string code)
-        {
-            string body = $@"
-            <div style='font-family: Helvetica, Arial, sans-serif; min-width: 320px; max-width: 600px; margin: 0 auto; overflow: auto; line-height: 2;'>
-                <div style='margin: 20px auto; width: 90%; padding: 20px 0;'>
-                    <div style='border-bottom: 1px solid #eee; padding-bottom: 10px;'>
-                        <a href='#' style='font-size: 1.4em; color: #00466a; text-decoration: none; font-weight: 600;'>EduMaster</a>
-                    </div>
-                    <p style='font-size: 1.1em;'>Здравствуйте, <b>{login}</b>!</p>
-                    <p>Спасибо за регистрацию на платформе EduMaster. Для завершения создания аккаунта используйте следующий код подтверждения:</p>
-                    <h2 style='background: #00466a; margin: 0 auto; width: max-content; padding: 0 10px; color: #fff; border-radius: 4px; letter-spacing: 4px;'>{code}</h2>
-                    <p style='font-size: 0.9em;'>Этот код действителен в течение 10 минут.</p>
-                    <hr style='border: none; border-top: 1px solid #eee;' />
-                    <div style='float: right; padding: 8px 0; color: #aaa; font-size: 0.8em; line-height: 1; font-weight: 300;'>
-                        <p>EduMaster Inc</p>
-                        <p>Если вы не регистрировались, просто проигнорируйте это письмо.</p>
-                    </div>
-                </div>
-            </div>";
-            return body;
-        }
     }
-}
 
-    // ================= DTO =================
+    // ================= DTO РљР›РђРЎРЎР« (Р’РќР• РљРћРќРўР РћР›Р›Р•Р Рђ) =================
 
     public class RegisterViewModel
     {
-        public string Email { get; set; } = string.Empty;
-        public string Login { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string PasswordConfirm { get; set; } = string.Empty;
+        public string Email { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string PasswordConfirm { get; set; }
     }
 
-    public class LoginViewModel 
+    public class LoginViewModel
     {
-        public string LoginOrEmail { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public string LoginOrEmail { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class ConfirmViewModel
+    {
+        public string Email { get; set; }
+        public string Code { get; set; }
+    }
+
+    public class MessageViewModel
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Subject { get; set; }
+        public string Message { get; set; }
+    }
 }
-//private class RegistrationCacheModel
-//{
-//    public string Login { get; set; }
-//    public string Password { get; set; }
-//    public string Code { get; set; }
-//}
-
-
-// DTO для подтверждения (добавь в конец файла)
-public class ConfirmViewModel
-{
-    public string Email { get; set; }
-    public string Code { get; set; }
-}
-
