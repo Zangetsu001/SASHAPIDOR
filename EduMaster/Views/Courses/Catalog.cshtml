@@ -1,126 +1,98 @@
 ﻿@model EduMaster.Domain.Models.ViewModels.CoursesIndexViewModel
+
 @{
-    ViewData["Title"] = "Каталог Курсов";
-}
-@section Styles {
-    <link rel="stylesheet" href="~/css/courses.css" asp-append-version="true" />
+    ViewData["Title"] = "Каталог курсов";
 }
 
-<div class="container-section">
-    <div class="text-center mb-5">
-        <h1 class="section-title">Каталог Образовательных Программ</h1>
-        <p class="section-description">Найдите идеальный курс для развития своих навыков.</p>
-    </div>
+<link rel="stylesheet" href="~/css/courses.css" />
 
-    <div class="courses-layout">
-        <aside class="courses-sidebar">
-            <div class="filter-card">
-                <h3>Категории</h3>
-                <div class="category-list">
-                    <a asp-action="Catalog" asp-route-search="@Model.Search" class="category-item @(Model.SelectedCategoryId == null ? "active" : "")">
-                        <span>Все направления</span><i class="fa fa-th-large"></i>
-                    </a>
-                    @foreach (var cat in Model.Categories)
+<div class="container mt-4">
+    <h2 class="mb-4">Каталог курсов</h2>
+
+    <form method="get" asp-action="Catalog" class="row g-3 mb-5 align-items-end">
+        <div class="col-md-6">
+            <label class="form-label">Поиск</label>
+            <input type="text" name="search" value="@Model.Search" class="form-control" placeholder="Название или описание..." />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Категория</label>
+            <select name="categoryId" class="form-select">
+                <option value="">Все категории</option>
+                @foreach (var cat in Model.Categories)
+                {
+                    // Делаем выбранной текущую категорию
+                    if (Model.SelectedCategoryId == cat.Id)
                     {
-                        <a asp-action="Catalog" asp-route-categoryId="@cat.Id" asp-route-search="@Model.Search" class="category-item @(Model.SelectedCategoryId == cat.Id ? "active" : "")">
-                            <span>@cat.name</span><i class="fa fa-angle-right"></i>
-                        </a>
+                        <option value="@cat.Id" selected>@cat.name</option>
                     }
-                </div>
+                    else
+                    {
+                        <option value="@cat.Id">@cat.name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Найти</button>
+        </div>
+    </form>
+
+    <div class="row">
+        @if (!Model.Courses.Any())
+        {
+            <div class="col-12 text-center">
+                <p class="text-muted">Курсы не найдены.</p>
             </div>
-        </aside>
-
-        <div class="courses-content">
-            <form method="get" asp-action="Catalog" class="search-form mb-4">
-                <input type="text" name="search" value="@Model.Search" placeholder="Поиск курса..." />
-                @if (Model.SelectedCategoryId.HasValue)
-                {
-                    <input type="hidden" name="categoryId" value="@Model.SelectedCategoryId" />
-                }
-                <button type="submit" class="btn-search"><i class="fa fa-search"></i></button>
-            </form>
-
-            @if (!Model.SelectedCategoryId.HasValue && string.IsNullOrEmpty(Model.Search))
+        }
+        else
+        {
+            @foreach (var course in Model.Courses)
             {
-                <div class="categories-dashboard">
-                    @foreach (var cat in Model.Categories)
-                    {
-                        <a asp-action="Catalog" asp-route-categoryId="@cat.Id" class="cat-dashboard-card">
-                            <div class="cat-icon">📚</div>
-                            <h3>@cat.name</h3>
-                            <p>Перейти <i class="fa fa-arrow-right ms-1"></i></p>
-                        </a>
-                    }
-                </div>
-            }
-            else
-            {
-                if (Model.SelectedCategory != null)
-                {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@Url.Action("GetImage", "Courses", new { courseId = course.Id })"
+                             class="card-img-top"
+                             alt="@course.title"
+                             style="height: 200px; object-fit: cover;"
+                             onerror="this.src='/img/default-course.jpg';"> <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@course.title</h5>
+                            <p class="card-text text-truncate">@course.description</p>
 
-                    <h2 class="mb-4">Раздел: <span style="color: #0066cc;">@Model.SelectedCategory.name</span></h2>
-                }
+                            <div class="mt-auto d-flex justify-content-between align-items-center">
+                                <span class="fw-bold fs-5">@course.price ₽</span>
 
-                <div class="courses-grid">
-                    @foreach (var course in Model.Courses)
-                    {
-                        <div class="course-card">
-
-                            <!-- ЗАПРОС КАРТИНКИ -->
-                            <div class="course-img-wrapper">
-                                <img src="@Url.Action("GetImage", "Courses", new { courseId = course.Id })"
-                                     alt="@course.title"
-                                     class="course-img"
-                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-
-                                <div class="course-placeholder" style="display:none;">
-                                    <i class="fa fa-graduation-cap"></i>
-                                </div>
+                                <form asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="courseId" value="@course.Id" />
+                                    <button type="submit" class="btn btn-success">В корзину</button>
+                                </form>
                             </div>
 
-                            <div class="course-body">
-                                <h3 class="course-title">@course.title</h3>
-                                <p class="course-desc">@course.description</p>
-                                <div class="course-footer">
-                                    <span class="course-price">@course.price.ToString("N0") ₽</span>
-                                    <div class="course-actions">
-                                        <button class="btn-details" data-id="@course.Id">Инфо</button>
-                                        @if (User.Identity.IsAuthenticated)
-                                        {
-                                            <button class="btn-enroll" data-id="@course.Id">Записаться</button>
-                                        }
-                                        else
-                                        {
-                                            <button class="btn-enroll" onclick="openModal()">Вход</button>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
+                            <button class="btn btn-outline-info btn-sm mt-2 w-100"
+                                    onclick="openCourseDetails('@course.Id')">
+                                Подробнее
+                            </button>
                         </div>
-                    }
+                    </div>
                 </div>
             }
-        </div>
+        }
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="courseDetailsModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="modalCourseTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body pt-2">
-                <span class="badge bg-primary mb-3" id="modalCourseCategory"></span>
-                <p id="modalCourseDesc" class="text-muted"></p>
-                <h3 class="text-end fw-bold text-primary" id="modalCoursePrice"></h3>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <script src="~/js/courses_script.js" asp-append-version="true"></script>
-}
+<script>
+    function openCourseDetails(id) {
+        fetch(`/Courses/GetCourseDetails?id=${id}`)
+            .then(response => response.json())
+            .then(data => {
+                // Здесь логика открытия твоего модального окна
+                // Например:
+                // document.getElementById('modalTitle').innerText = data.title;
+                // document.getElementById('modalDesc').innerText = data.description;
+                // myModal.show();
+                alert("Детали курса:\n" + data.title + "\n" + data.description); // Временная заглушка
+            })
+            .catch(err => console.error(err));
+    }
+</script>

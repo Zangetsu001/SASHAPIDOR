@@ -76,10 +76,47 @@ namespace EduMaster.DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "EnrollmentDb",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EnrollmentDb", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EnrollmentDb_Course_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Course",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EnrollmentDb_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CourseImage_course_id",
                 table: "CourseImage",
                 column: "course_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EnrollmentDb_CourseId",
+                table: "EnrollmentDb",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EnrollmentDb_UserId",
+                table: "EnrollmentDb",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -92,10 +129,13 @@ namespace EduMaster.DAL.Migrations
                 name: "CourseImage");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "EnrollmentDb");
 
             migrationBuilder.DropTable(
                 name: "Course");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

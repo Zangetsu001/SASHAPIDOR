@@ -28,6 +28,7 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     position: fixed; /* Фиксация сверху */
     top: 0;
+    left: 0;
     z-index: 1000;
 }
 
@@ -38,6 +39,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 /* Логотип */
@@ -48,6 +50,16 @@ body {
     font-weight: 700;
     display: flex;
     align-items: center;
+}
+
+/* Обертка меню (Десктоп) */
+.header-menu-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 40px;
 }
 
 /* Меню навигации */
@@ -79,7 +91,7 @@ body {
     align-items: center; /* Выравнивание по вертикали */
 }
 
-    /* ВАЖНО: Убираем блочное поведение формы, чтобы кнопка "Выйти" не падала вниз */
+    /* ВАЖНО: Убираем блочное поведение формы */
     .header-auth form {
         margin: 0;
         padding: 0;
@@ -113,6 +125,18 @@ body {
     .header-button i {
         font-size: 1.1em;
     }
+
+/* === БУРГЕР КНОПКА (Скрыта на десктопе) === */
+.burger-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 1001;
+}
 
 /* === ОСНОВНОЙ КОНТЕНТ =============================================== */
 .main-content {
@@ -183,20 +207,92 @@ footer {
         transform: translateY(-3px);
     }
 
-/* === АДАПТИВНОСТЬ =================================================== */
-@media (max-width: 900px) {
+/* === АДАПТИВНОСТЬ (МОБИЛЬНАЯ ВЕРСИЯ) ================================= */
+@media (max-width: 992px) { /* Планшеты и телефоны */
+
     .header-container {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
+        padding: 15px 20px;
     }
 
+    /* Показываем кнопку бургера */
+    .burger-btn {
+        display: block;
+    }
+
+    /* Скрываем меню по умолчанию и позиционируем абсолютно */
+    .header-menu-wrapper {
+        display: none;
+        position: absolute;
+        top: 100%; /* Сразу под хедером */
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background: #0077b6; /* Цвет фона выпадающего меню */
+        padding: 20px;
+        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        margin-left: 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        align-items: stretch; /* Растянуть элементы на всю ширину */
+    }
+
+        /* Класс active добавляется через JS для открытия */
+        .header-menu-wrapper.active {
+            display: flex;
+            animation: slideDown 0.3s ease forwards;
+        }
+
+    /* Стили элементов внутри мобильного меню */
     .nav-menu {
-        flex-wrap: wrap;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+        gap: 0;
+    }
+
+        .nav-menu a {
+            display: block;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+            .nav-menu a:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+
+    .header-auth {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+        .header-auth form {
+            width: 100%;
+        }
+
+    .header-button {
+        width: 100%;
         justify-content: center;
+        padding: 10px;
+        font-size: 16px;
     }
 
     .main-content {
-        margin-top: 140px; /* Больше отступ для мобильной шапки */
+        margin-top: 70px; /* Чуть меньше отступ на мобильных */
+    }
+}
+
+/* Анимация выпадания */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

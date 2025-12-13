@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/css/login_and_registration.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/cabinet.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/courses.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/dashboard_modal.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -16,48 +17,53 @@
 </head>
 <body>
 
-    <!-- НОВАЯ КРАСИВАЯ ШАПКА -->
     <header class="main-header">
         <div class="header-container">
+
             <div class="logo">
                 <a asp-controller="Home" asp-action="Index">EduMaster</a>
             </div>
 
-            <nav class="nav-menu">
-                <a href="#home-section">Главная</a>
-                <a href="#about-section">О нас</a>
-                <a asp-controller="Courses" asp-action="Catalog">Услуги</a>
-                <a href="#contacts-section">Контакты</a>
-                <a href="#message-section">Написать сообщение</a>
-            </nav>
+            <button class="burger-btn" id="burgerBtn">
+                <i class="fas fa-bars"></i>
+            </button>
 
-            <div class="header-auth">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <button class="header-button" onclick="openDashboard()">
-                        <i class="fa fa-user"></i> Личный кабинет
-                    </button>
+            <div class="header-menu-wrapper" id="headerMenu">
+                <nav class="nav-menu">
+                    <a href="#home-section" class="nav-link-item">Главная</a>
+                    <a href="#about-section" class="nav-link-item">О нас</a>
+                    <a asp-controller="Courses" asp-action="Catalog" class="nav-link-item">Услуги</a>
+                    <a href="#contacts-section" class="nav-link-item">Контакты</a>
+                    <a href="#message-section" class="nav-link-item">Написать сообщение</a>
+                </nav>
 
-                    <form method="post" asp-controller="Home" asp-action="Logout">
-                        <button type="submit" class="header-button">
-                            <i class="fa fa-sign-out-alt"></i> Выйти
+                <div class="header-auth">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <button class="header-button" onclick="openDashboard()">
+                            <i class="fa fa-user"></i> Личный кабинет
                         </button>
-                    </form>
-                }
-                else
-                {
-                    <button class="header-button" onclick="openModal()">
-                        <i class="fa fa-sign-in-alt"></i> Войти
-                    </button>
-                    <button class="header-button" onclick="openModal(); switchToRegister()">
-                        <i class="fa fa-user-plus"></i> Регистрация
-                    </button>
-                }
+
+                        <form method="post" asp-controller="Home" asp-action="Logout">
+                            <button type="submit" class="header-button">
+                                <i class="fa fa-sign-out-alt"></i> Выйти
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <button class="header-button" onclick="openModal()">
+                            <i class="fa fa-sign-in-alt"></i> Войти
+                        </button>
+                        <button class="header-button" onclick="openModal(); switchToRegister()">
+                            <i class="fa fa-user-plus"></i> Регистрация
+                        </button>
+                    }
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
     <main class="main-content">
         @RenderBody()
     </main>

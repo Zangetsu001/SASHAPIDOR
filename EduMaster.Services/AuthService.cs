@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using EduMaster.DAL;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EduMaster.Services
 {
@@ -38,8 +42,8 @@ namespace EduMaster.Services
             _db.UserDb.Add(user);
             await _db.SaveChangesAsync();
 
-            // После успешной регистрации автоматически входим
-            await SignInUserAsync(user.Login, user.Email, user.Role);
+            // ИСПРАВЛЕНИЕ: Передаем 4 параметра (Id, Login, Email, Role)
+            await SignInUserAsync(user.Id, user.Login, user.Email, user.Role);
             return true;
         }
 
@@ -50,18 +54,20 @@ namespace EduMaster.Services
 
             if (!_hasher.VerifyPassword(password, user.PasswordHash)) return false;
 
-            // Создаём Cookie-аутентификацию
-            await SignInUserAsync(user.Login, user.Email, user.Role);
+            // ИСПРАВЛЕНИЕ: Передаем 4 параметра (Id, Login, Email, Role)
+            await SignInUserAsync(user.Id, user.Login, user.Email, user.Role);
             return true;
         }
 
-        private async Task SignInUserAsync(string login, string email, string role)
+        // Обновленная сигнатура метода
+        private async Task SignInUserAsync(Guid userId, string login, string email, string role)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             if (httpContext == null) return;
 
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()), // Важно: сохраняем ID
                 new Claim(ClaimTypes.Name, login ?? string.Empty),
                 new Claim(ClaimTypes.Email, email ?? string.Empty),
                 new Claim(ClaimTypes.Role, role ?? string.Empty)

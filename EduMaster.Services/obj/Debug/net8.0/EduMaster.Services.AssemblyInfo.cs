@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EduMaster.Services")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+546ac912b8100fb17ab9f7d6a59d23446f4703c1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b647811acd221a0fca2d0b002c8700ae6011e8a0")]
 [assembly: System.Reflection.AssemblyProductAttribute("EduMaster.Services")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EduMaster.Services")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

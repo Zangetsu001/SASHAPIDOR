@@ -2,6 +2,7 @@
 using EduMaster.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using EduMaster.DAL;
 
 namespace EduMaster.Services
 {
