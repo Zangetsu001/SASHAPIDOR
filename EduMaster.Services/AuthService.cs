@@ -1,13 +1,10 @@
-﻿using EduMaster.Domain.ModelsDb;
-using Microsoft.EntityFrameworkCore;
+﻿using EduMaster.DAL;
+using EduMaster.Domain.ModelsDb;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using EduMaster.DAL;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EduMaster.Services
 {
@@ -42,8 +39,7 @@ namespace EduMaster.Services
             _db.UserDb.Add(user);
             await _db.SaveChangesAsync();
 
-            // ИСПРАВЛЕНИЕ: Передаем 4 параметра (Id, Login, Email, Role)
-            await SignInUserAsync(user.Id, user.Login, user.Email, user.Role);
+            await SignInUserAsync(user.Login, user.Email, user.Role);
             return true;
         }
 
@@ -54,23 +50,25 @@ namespace EduMaster.Services
 
             if (!_hasher.VerifyPassword(password, user.PasswordHash)) return false;
 
-            // ИСПРАВЛЕНИЕ: Передаем 4 параметра (Id, Login, Email, Role)
-            await SignInUserAsync(user.Id, user.Login, user.Email, user.Role);
+            await SignInUserAsync(user.Login, user.Email, user.Role);
             return true;
         }
 
-        // Обновленная сигнатура метода
-        private async Task SignInUserAsync(Guid userId, string login, string email, string role)
+        private async Task SignInUserAsync(string login, string email, string role)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             if (httpContext == null) return;
 
+            // Получаем ID пользователя для сохранения в куки
+            var userId = (await _db.UserDb.AsNoTracking().FirstOrDefaultAsync(u => u.Login == login))?.Id.ToString() ?? "";
+
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()), // Важно: сохраняем ID
                 new Claim(ClaimTypes.Name, login ?? string.Empty),
                 new Claim(ClaimTypes.Email, email ?? string.Empty),
-                new Claim(ClaimTypes.Role, role ?? string.Empty)
+                new Claim(ClaimTypes.Role, role ?? string.Empty),
+                // ВАЖНО: Добавляем ID пользователя
+                new Claim(ClaimTypes.NameIdentifier, userId)
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

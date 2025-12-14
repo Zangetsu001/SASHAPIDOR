@@ -1,0 +1,49 @@
+﻿@model List<EduMaster.Domain.ModelsDb.EnrollmentDb>
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Ваша корзина 🛒</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">Корзина пуста. <a asp-controller="Courses" asp-action="Catalog">Перейти в каталог</a></div>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Курс</th>
+                    <th>Цена</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <h5>@item.Course.title</h5>
+                            <small>@item.Course.description</small>
+                        </td>
+                        <td>@item.Course.price.ToString("N0") ₽</td>
+                        <td>
+                            <form asp-action="Remove" method="post">
+                                <input type="hidden" name="enrollmentId" value="@item.Id" />
+                                <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="text-end mt-3">
+            <form asp-action="Purchase" method="post">
+                <button class="btn btn-success btn-lg">Оформить заказ</button>
+            </form>
+        </div>
+    }
+</div>

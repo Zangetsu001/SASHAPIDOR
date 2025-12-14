@@ -40,24 +40,37 @@
                 <div class="header-auth">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <button class="header-button" onclick="openDashboard()">
-                            <i class="fa fa-user"></i> Личный кабинет
-                        </button>
+                        <div class="dropdown" style="margin-left: 20px;">
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false" style="color: #333;">
+                                <div style="width: 32px; height: 32px; background-color: #00466a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 8px;">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <strong>@User.Identity.Name</strong>
+                            </a>
+                            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
+                                <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index">👤 Мой Профиль</a></li>
+                                <li><a class="dropdown-item" asp-controller="Cart" asp-action="Index">🛒 Корзина</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="Dashboard">🎓 Мои курсы</a></li>
 
-                        <form method="post" asp-controller="Home" asp-action="Logout">
-                            <button type="submit" class="header-button">
-                                <i class="fa fa-sign-out-alt"></i> Выйти
-                            </button>
-                        </form>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index">⚙️ Админ-панель</a></li>
+                                }
+
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" asp-controller="Home" asp-action="Logout">
+                                        <button type="submit" class="dropdown-item text-danger">Выйти</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
                     }
                     else
                     {
-                        <button class="header-button" onclick="openModal()">
-                            <i class="fa fa-sign-in-alt"></i> Войти
-                        </button>
-                        <button class="header-button" onclick="openModal(); switchToRegister()">
-                            <i class="fa fa-user-plus"></i> Регистрация
-                        </button>
+                        <button class="header-button" onclick="openModal()"><i class="fa fa-sign-in-alt"></i> Войти</button>
+                        <button class="header-button" onclick="openModal(); switchToRegister()"><i class="fa fa-user-plus"></i> Регистрация</button>
                     }
                 </div>
             </div>

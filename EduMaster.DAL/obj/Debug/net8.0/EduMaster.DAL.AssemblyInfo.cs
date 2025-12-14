@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EduMaster.DAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b647811acd221a0fca2d0b002c8700ae6011e8a0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+617a53d7cb02b57cecd246f9fd969ffd3dfad616")]
 [assembly: System.Reflection.AssemblyProductAttribute("EduMaster.DAL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EduMaster.DAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
